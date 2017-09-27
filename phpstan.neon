@@ -1,0 +1,3 @@
+parameters:
+	ignoreErrors:
+		- '#Method Illuminate\\Contracts\\Foundation\\Application::environment\(\) invoked with 1 parameter, 0 required\.#'
