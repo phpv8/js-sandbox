@@ -1,0 +1,63 @@
+sudo: false
+
+language: php
+
+cache:
+  directories:
+    - $HOME/.composer/cache
+    - $HOME/.build
+    - $HOME/.ccache
+
+php:
+ - 7.1
+ - 7.2
+ - nightly
+
+matrix:
+  allow_failures:
+    - php: nightly
+
+env:
+  - PHP_V8=v0.2.0
+    PHP_REF=v0.5.0
+
+addons:
+  apt:
+    sources:
+      - sourceline: ppa:pinepain/libv8-6.3
+    packages:
+      - libv8-6.3
+      - libv8-6.3-dev
+      - libv8-6.3-dbg
+      - ccache
+
+before_install:
+  - pwd
+  - env
+  - export PATH="/usr/lib/ccache:$PATH"
+  - if [ ! -d "$HOME/.build/php-v8" ]; then cd $HOME/.build && git clone git://github.com/pinepain/php-v8.git; else cd $HOME/.build/php-v8 && git fetch; fi
+  - cd $HOME/.build/php-v8 && git checkout $PHP_V8
+  - if [ ! -d "$HOME/.build/php-ref" ]; then cd $HOME/.build && git clone git://github.com/pinepain/php-ref.git; else cd $HOME/.build/php-ref && git fetch; fi
+  - cd $HOME/.build/php-ref && git checkout $PHP_REF
+
+install:
+  - cd $HOME/.build/php-v8 && phpize && ./configure && make install && make clean && phpize --clean && cd $TRAVIS_BUILD_DIR
+  - echo "extension=v8.so" >> ~/.phpenv/versions/$(phpenv version-name)/etc/php.ini
+  - cd $HOME/.build/php-ref && phpize && ./configure && make install && make clean && phpize --clean && cd $TRAVIS_BUILD_DIR
+  - echo "extension=ref.so" >> ~/.phpenv/versions/$(phpenv version-name)/etc/php.ini
+  - php --ri v8
+  - php --ri ref
+  - ccache -s
+
+before_script:
+  - composer install
+
+script:
+  - vendor/bin/phpstan analyse -c phpstan.neon --level 7 src || true
+  - vendor/bin/phpunit --coverage-text --configuration phpunit.xml --coverage-clover=coverage.clover
+
+after_script:
+    - if [ "nightly" != "${TRAVIS_PHP_VERSION}" ]; then
+        wget https://scrutinizer-ci.com/ocular.phar &&
+        php ocular.phar code-coverage:upload --format=php-clover coverage.clover;
+      fi

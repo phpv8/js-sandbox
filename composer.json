@@ -1,0 +1,38 @@
+{
+    "name": "pinepain/js-sandbox",
+    "type": "library",
+    "description": "Embedding JavaScript in PHP made easy: the definitive library for pinepain/php-v8 extension",
+    "keywords": ["php-v8", "v8", "js", "javascript", "sandbox", "embedding"],
+    "homepage": "https://github.com/pinepain/js-sandbox",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Bogdan Padalko",
+            "email": "pinepain@gmail.com",
+            "homepage": "https://github.com/pinepain"
+        }
+    ],
+    "require": {
+        "php": "~7.1",
+        "league/flysystem": "^1.0",
+        "pinepain/php-object-maps": "^0.3.0"
+    },
+    "require-dev": {
+        "illuminate/support": "5.5.*",
+        "illuminate/contracts": "5.5.*",
+        "phpunit/phpunit": "~6.3",
+        "pinepain/php-v8-stubs": "^0.2.0",
+        "pinepain/php-ref-stubs": "^0.5.0",
+        "phpstan/phpstan": "^0.8.5"
+    },
+    "autoload": {
+        "psr-4": {
+            "Pinepain\\JsSandbox\\": "src/"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "Pinepain\\JsSandbox\\Tests\\": "tests/"
+        }
+    }
+}
