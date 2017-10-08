@@ -163,7 +163,7 @@ class JsSandboxServiceProvider extends ServiceProvider
 
         $this->app->singleton(ObjectSpecsCollectionInterface::class, ObjectSpecsCollection::class);
         $this->app->singleton(FunctionWrappersCacheInterface::class, function () use ($function_wrappers_map) {
-            new FunctionWrappersCache($function_wrappers_map);
+            return new FunctionWrappersCache($function_wrappers_map);
         });
 
         $object_store_map = new ObjectBiMap();
