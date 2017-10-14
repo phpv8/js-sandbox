@@ -65,7 +65,7 @@ class ModulesService
         $runtime_function = $this->createRuntimeFunction($require_object);
         $function_object  = $this->createFunctionObject($context, $runtime_function, $wrapper);
 
-        return new NativeRequireFunctionWrapper($context, $context->globalObject(), $function_object, $wrapper);
+        return new NativeRequireFunctionWrapper($context->getIsolate(), $context, $function_object, $wrapper, $context->globalObject());
     }
 
     /**
