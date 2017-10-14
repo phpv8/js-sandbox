@@ -19,54 +19,36 @@ namespace Pinepain\JsSandbox\NativeWrappers;
 use Pinepain\JsSandbox\Wrappers\WrapperInterface;
 use V8\Context;
 use V8\FunctionObject;
+use V8\Isolate;
 use V8\ObjectValue;
+use V8\Value;
 
 
-class NativeFunctionWrapper implements NativeFunctionWrapperInterface
+class NativeFunctionWrapper extends NativeObjectWrapper implements NativeFunctionWrapperInterface
 {
-    /**
-     * @var Context
-     */
-    private $context;
     /**
      * @var ObjectValue
      */
-    private $recv;
-    /**
-     * @var FunctionObject
-     */
-    private $function_object;
-    /**
-     * @var WrapperInterface
-     */
-    private $wrapper;
+    protected $recv;
 
-    public function __construct(Context $context, ObjectValue $recv, FunctionObject $function_object, WrapperInterface $wrapper)
+    public function __construct(Isolate $isolate, Context $context, FunctionObject $target, WrapperInterface $wrapper, ObjectValue $recv)
     {
-        $this->context         = $context;
-        $this->recv            = $recv;
-        $this->function_object = $function_object;
-        $this->wrapper         = $wrapper;
+        parent::__construct($isolate, $context, $target, $wrapper);
+        $this->recv = $recv;
     }
 
     /**
      * {@inheritdoc}
      */
-    public function call(...$args)
+    public function call(...$args): Value
     {
         $args_for_call = [];
         foreach ($args as $arg) {
             $args_for_call[] = $this->wrapper->wrap($this->context->getIsolate(), $this->context, $arg);
         }
 
-        return $this->function_object->call($this->context, $this->recv, $args_for_call);
-    }
+        assert($this->target instanceof FunctionObject);
 
-    /**
-     * {@inheritdoc}
-     */
-    public function __invoke(...$args)
-    {
-        return $this->call(... $args);
+        return $this->target->call($this->context, $this->recv, $args_for_call);
     }
 }

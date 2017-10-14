@@ -19,19 +19,12 @@ namespace Pinepain\JsSandbox\NativeWrappers;
 use V8\Value;
 
 
-interface NativeFunctionWrapperInterface
+interface NativeFunctionWrapperInterface extends NativeObjectWrapperInterface
 {
     /**
      * @param array ...$args
      *
      * @return Value
      */
-    public function call(...$args);
-
-    /**
-     * @param array ...$args
-     *
-     * @return Value
-     */
-    public function __invoke(...$args);
+    public function call(...$args): Value;
 }
