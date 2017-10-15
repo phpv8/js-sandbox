@@ -19,6 +19,8 @@ namespace Pinepain\JsSandbox\Laravel;
 use Illuminate\Contracts\Container\Container;
 use Illuminate\Support\ServiceProvider;
 use InvalidArgumentException;
+use Pinepain\JsSandbox\Common\NativeGlobalObjectWrapper;
+use Pinepain\JsSandbox\Common\NativeGlobalObjectWrapperInterface;
 use Pinepain\JsSandbox\Extractors\Extractor;
 use Pinepain\JsSandbox\Extractors\ExtractorDefinitionBuilder;
 use Pinepain\JsSandbox\Extractors\ExtractorDefinitionBuilderInterface;
@@ -96,6 +98,7 @@ class JsSandboxServiceProvider extends ServiceProvider
         $this->registerFunctionCallHandler();
         $this->registerWrapper();
         $this->registerExtractor();
+        $this->registerCommon();
     }
 
     protected function registerIsolateAndContext()
@@ -251,7 +254,18 @@ class JsSandboxServiceProvider extends ServiceProvider
 
             return $collection;
         });
+    }
 
+    public function registerCommon()
+    {
+        $this->app->singleton(NativeGlobalObjectWrapperInterface::class, function (Container $app) {
+            return new NativeGlobalObjectWrapper(
+                $app->make(Isolate::class),
+                $app->make(Context::class),
+                $app->make(Context::class)->globalObject(),
+                $app->make(WrapperInterface::class)
+            );
+        });
     }
 
     public function provides()
@@ -284,6 +298,7 @@ class JsSandboxServiceProvider extends ServiceProvider
             ExtractorsObjectStoreInterface::class,
             ExtractorInterface::class,
 
+            NativeGlobalObjectWrapperInterface::class,
         ];
     }
 }

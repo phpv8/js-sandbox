@@ -18,6 +18,8 @@ namespace Pinepain\JsSandbox\Laravel;
 
 use Illuminate\Contracts\Container\Container;
 use Illuminate\Support\ServiceProvider;
+use Pinepain\JsSandbox\Common\NativeGlobalObjectWrapper;
+use Pinepain\JsSandbox\Common\NativeGlobalObjectWrapperInterface;
 use Pinepain\JsSandbox\Modules\ModulesCache;
 use Pinepain\JsSandbox\Modules\ModulesCacheInterface;
 use Pinepain\JsSandbox\Modules\ModulesService;
@@ -33,6 +35,7 @@ use Pinepain\JsSandbox\Modules\RequireCallbackInterface;
 use Pinepain\JsSandbox\Specs\ObjectSpecsCollectionInterface;
 use Pinepain\JsSandbox\Wrappers\WrapperInterface;
 use V8\Context;
+use V8\Isolate;
 
 
 class JsSandboxModulesServiceProvider extends ServiceProvider
@@ -67,8 +70,8 @@ class JsSandboxModulesServiceProvider extends ServiceProvider
                 $app->make(WrapperInterface::class)
             );
         });
-    }
 
+    }
 
     public function provides()
     {
@@ -81,6 +84,7 @@ class JsSandboxModulesServiceProvider extends ServiceProvider
 
             RequireCallbackInterface::class,
             NativeRequireFunctionWrapperInterface::class,
+
         ];
     }
 }
