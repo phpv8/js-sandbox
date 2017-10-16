@@ -18,7 +18,6 @@ namespace Pinepain\JsSandbox\Modules;
 
 use League\Flysystem\Util;
 use Pinepain\JsSandbox\Exceptions\NativeException;
-use Pinepain\JsSandbox\Exceptions\SandboxException;
 use Pinepain\JsSandbox\Modules\Repositories\NativeModulesRepositoryInterface;
 use Pinepain\JsSandbox\Modules\Repositories\SourceModulesRepositoryInterface;
 use Pinepain\JsSandbox\Wrappers\FunctionComponents\Runtime\ExecutionContextInterface;
@@ -116,7 +115,7 @@ class RequireCallback implements RequireCallbackInterface
             if ($top->isLoaded()) {
                 // UNLIKELY
                 // this should never happens, but just in case
-                throw new SandboxException('Modifying loaded module is not allowed');
+                throw new NativeException('Modifying loaded module is not allowed');
             }
 
             // add current module as top one child
