@@ -141,6 +141,7 @@ class ParameterSpecBuilder implements ParameterSpecBuilderInterface
         // after this point all expected definition values MUST be at least 2 chars length
 
         if (strlen($definition) < 2) {
+            // UNEXPECTED
             // Less likely we will ever get here because it should fail at a parsing step, but just in case
             throw new ParameterSpecBuilderException("Unknown default value format '{$definition}'");
         }
@@ -149,11 +150,10 @@ class ParameterSpecBuilder implements ParameterSpecBuilderInterface
             return [];
         }
 
-        if ('"' == $definition[0] && '"' == $definition[-1]) {
-            return trim($definition, '"');
-        }
-        if ("'" == $definition[0] && "'" == $definition[-1]) {
-            return trim($definition, "'");
+        foreach (['"', "'"] as $quote) {
+            if ($quote == $definition[0] && $quote == $definition[-1]) {
+                return trim($definition, $quote);
+            }
         }
 
         // Less likely we will ever get here because it should fail at a parsing step, but just in case
