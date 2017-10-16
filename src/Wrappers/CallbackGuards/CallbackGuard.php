@@ -16,6 +16,7 @@
 namespace Pinepain\JsSandbox\Wrappers\CallbackGuards;
 
 
+use Pinepain\JsSandbox\Exceptions\EscapableException;
 use Pinepain\JsSandbox\Exceptions\NativeException;
 use Throwable;
 use V8\CallbackInfoInterface;
@@ -57,6 +58,8 @@ class CallbackGuard implements CallbackGuardInterface
                 }
             } catch (NativeException $e) {
                 $isolate->throwException($context, ExceptionManager::createError($context, new StringValue($isolate, $e->getMessage())), $e);
+            } catch (EscapableException $e) {
+                throw $e->getOriginal();
             } catch (Throwable $e) {
                 // UNEXPECTED
                 $message = $this->getMessageFromException($e);
