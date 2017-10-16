@@ -19,7 +19,7 @@ namespace Pinepain\JsSandbox\Wrappers\FunctionComponents\Runtime;
 use Pinepain\JsSandbox\NativeWrappers\NativeFunctionWrapper;
 use Pinepain\JsSandbox\NativeWrappers\NativeFunctionWrapperInterface;
 use Pinepain\JsSandbox\Specs\FunctionSpecInterface;
-use Pinepain\JsSandbox\Wrappers\Runtime\RuntimeFunction;
+use Pinepain\JsSandbox\Wrappers\Runtime\RuntimeFunctionInterface;
 use Pinepain\JsSandbox\Wrappers\WrapperInterface;
 use V8\Context;
 use V8\FunctionCallbackInfo;
@@ -35,7 +35,7 @@ class ExecutionContext implements ExecutionContextInterface
      */
     private $wrapper;
     /**
-     * @var RuntimeFunction
+     * @var RuntimeFunctionInterface
      */
     private $runtime_function;
     /**
@@ -47,7 +47,7 @@ class ExecutionContext implements ExecutionContextInterface
      */
     private $spec;
 
-    public function __construct(WrapperInterface $wrapper, RuntimeFunction $runtime_function, FunctionCallbackInfo $args, FunctionSpecInterface $spec)
+    public function __construct(WrapperInterface $wrapper, RuntimeFunctionInterface $runtime_function, FunctionCallbackInfo $args, FunctionSpecInterface $spec)
     {
         $this->wrapper          = $wrapper;
         $this->runtime_function = $runtime_function;
@@ -75,6 +75,11 @@ class ExecutionContext implements ExecutionContextInterface
         return $this->wrapper;
     }
 
+    public function getRuntimeFunction(): RuntimeFunctionInterface
+    {
+        return $this->runtime_function;
+    }
+
     public function getFunctionCallbackInfo(): FunctionCallbackInfo
     {
         return $this->args;
@@ -83,11 +88,6 @@ class ExecutionContext implements ExecutionContextInterface
     public function getFunctionSpec(): FunctionSpecInterface
     {
         return $this->spec;
-    }
-
-    public function getRuntimeFunction(): RuntimeFunction
-    {
-        return $this->runtime_function;
     }
 
     public function getFunctionObject(): FunctionObject
@@ -103,6 +103,6 @@ class ExecutionContext implements ExecutionContextInterface
 
     public function wrapNativeFunction(ObjectValue $recv, FunctionObject $function_object): NativeFunctionWrapperInterface
     {
-        return new NativeFunctionWrapper($this->getContext(), $recv, $function_object, $this->getWrapper());
+        return new NativeFunctionWrapper($this->getIsolate(), $this->getContext(), $function_object, $this->getWrapper(), $recv);
     }
 }

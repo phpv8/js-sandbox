@@ -18,7 +18,7 @@ namespace Pinepain\JsSandbox\Wrappers\FunctionComponents\Runtime;
 
 use Pinepain\JsSandbox\NativeWrappers\NativeFunctionWrapperInterface;
 use Pinepain\JsSandbox\Specs\FunctionSpecInterface;
-use Pinepain\JsSandbox\Wrappers\Runtime\RuntimeFunction;
+use Pinepain\JsSandbox\Wrappers\Runtime\RuntimeFunctionInterface;
 use Pinepain\JsSandbox\Wrappers\WrapperInterface;
 use V8\Context;
 use V8\FunctionCallbackInfo;
@@ -37,11 +37,11 @@ interface ExecutionContextInterface
 
     public function getWrapper(): WrapperInterface;
 
+    public function getRuntimeFunction(): RuntimeFunctionInterface;
+
     public function getFunctionCallbackInfo(): FunctionCallbackInfo;
 
     public function getFunctionSpec(): FunctionSpecInterface;
-
-    public function getRuntimeFunction(): RuntimeFunction;
 
     public function getFunctionObject(): FunctionObject;
 
