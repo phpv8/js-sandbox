@@ -50,6 +50,8 @@ class ParameterSpecBuilder implements ParameterSpecBuilderInterface
                 |
                 (?:\[\s*\])                 # empty array
                 |
+                (?:\{\s*\})                 # empty object
+                |
                 true | false | null
             )
         )?
@@ -146,17 +148,28 @@ class ParameterSpecBuilder implements ParameterSpecBuilderInterface
             throw new ParameterSpecBuilderException("Unknown default value format '{$definition}'");
         }
 
-        if ('[' == $definition[0] && ']' == $definition[-1]) {
+        if ($this->wrappedWith($definition, '[', ']')) {
+            return [];
+        }
+
+        if ($this->wrappedWith($definition, '{', '}')) {
             return [];
         }
 
         foreach (['"', "'"] as $quote) {
-            if ($quote == $definition[0] && $quote == $definition[-1]) {
+            if ($this->wrappedWith($definition, $quote, $quote)) {
                 return trim($definition, $quote);
             }
         }
 
         // Less likely we will ever get here because it should fail at a parsing step, but just in case
         throw new ParameterSpecBuilderException("Unknown default value format '{$definition}'");
+    }
+
+    private function wrappedWith(string $definition, string $starts, $ends)
+    {
+        assert(strlen($definition) >= 2);
+
+        return $starts == $definition[0] && $ends == $definition[-1];
     }
 }

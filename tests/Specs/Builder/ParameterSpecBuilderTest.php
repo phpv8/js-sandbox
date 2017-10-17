@@ -162,6 +162,8 @@ class ParameterSpecBuilderTest extends TestCase
             ['1.2345', 1.2345],
             ['[]', []],
             ['[ ]', []],
+            ['{}', []],
+            ['{ }', []],
             ['null', null],
             ['Null', null],
             ['NulL', null],
