@@ -46,7 +46,7 @@ class ArrayExtractor implements PlainExtractorInterface
 
                 if ($next) {
                     try {
-                        $out[] = $extractor->extract($context, $item, $definition);
+                        $out[] = $extractor->extract($context, $item, $next);
                     } catch (ExtractorException $e) {
                         throw new ExtractorException("Failed to convert array item #{$i}: " . $e->getMessage());
                     }
@@ -77,7 +77,7 @@ class ArrayExtractor implements PlainExtractorInterface
 
                 if ($next) {
                     try {
-                        $out[$prop_name] = $extractor->extract($context, $item, $definition);
+                        $out[$prop_name] = $extractor->extract($context, $item, $next);
                     } catch (ExtractorException $e) {
                         throw new ExtractorException("Failed to convert array item #{$prop_name}: " . $e->getMessage());
                     }
