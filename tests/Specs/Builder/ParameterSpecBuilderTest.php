@@ -124,7 +124,7 @@ class ParameterSpecBuilderTest extends TestCase
     {
         $this->extractorDefinitionShouldBuildOn('type');
 
-        $spec = $this->builder->build('...type param');
+        $spec = $this->builder->build('type ...param');
 
         $this->assertInstanceOf(VariadicParameterSpec::class, $spec);
 
@@ -138,7 +138,7 @@ class ParameterSpecBuilderTest extends TestCase
      */
     public function testBuildingVariadicParameterWithDefaultValueShouldThrowException()
     {
-        $this->builder->build('...type param = []');
+        $this->builder->build('type ...param = []');
     }
 
     /**

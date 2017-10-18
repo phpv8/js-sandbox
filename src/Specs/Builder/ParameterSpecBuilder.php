@@ -31,13 +31,13 @@ class ParameterSpecBuilder implements ParameterSpecBuilderInterface
     protected $regexp = '/
         ^
         (?:
-            (?<rest>\.{3})
-            \s*
-        )?
-        (?:
             (?<type>(\w+\b(?:\(.*\))?)(?:\s*\|\s*(?-1))*)
             \s*
         )
+        (?:
+            (?<rest>\.{3})
+            \s*
+        )?
         (?<name>[_a-z]\w*)
         (?:
             \s* = \s*
