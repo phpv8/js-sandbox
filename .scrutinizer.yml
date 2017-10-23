@@ -2,9 +2,9 @@ build:
     dependencies:
         before:
             - sudo apt-get install -y software-properties-common
-            - sudo add-apt-repository ppa:pinepain/libv8-6.3
+            - sudo add-apt-repository ppa:pinepain/libv8-6.4
             - sudo apt-get update
-            - sudo apt-get install -y libv8-6.3 libv8-6.3-dev libv8-6.3-dbg
+            - sudo apt-get install -y libv8-6.4 libv8-6.4-dev libv8-6.4-dbg
             - pecl install v8
             - pecl install ref
 

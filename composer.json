@@ -15,7 +15,7 @@
     "require": {
         "php": "~7.1",
         "league/flysystem": "^1.0",
-        "pinepain/php-v8-stubs": "^0.2.0",
+        "pinepain/php-v8-stubs": "^0.2.1",
         "pinepain/php-ref-stubs": "^0.5.0",
         "pinepain/php-object-maps": "^0.3.0"
     },
