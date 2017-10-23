@@ -29,6 +29,7 @@ class EscapableException extends Exception
 
     public function __construct(Throwable $original)
     {
+        parent::__construct();
         $this->original = $original;
     }
 
