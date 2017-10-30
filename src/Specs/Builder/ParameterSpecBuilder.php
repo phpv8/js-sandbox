@@ -31,10 +31,6 @@ class ParameterSpecBuilder implements ParameterSpecBuilderInterface
     protected $regexp = '/
         ^
         (?:
-            (?<type>(\w+\b(?:\(.*\))?)(?:\s*\|\s*(?-1))*)
-            \s*
-        )
-        (?:
             (?<rest>\.{3})
             \s*
         )?
@@ -54,6 +50,14 @@ class ParameterSpecBuilder implements ParameterSpecBuilderInterface
                 |
                 true | false | null
             )
+            \s*
+        )?
+        (?:
+            \s*
+            \:
+            \s*
+            (?<type>(\w+\b(?:\(.*\))?)(?:\s*\|\s*(?-1))*)
+            \s*
         )?
         $
         /xi';
@@ -102,7 +106,7 @@ class ParameterSpecBuilder implements ParameterSpecBuilderInterface
 
     protected function buildVariadicParameterSpec(array $matches): VariadicParameterSpec
     {
-        if (isset($matches['default'])) {
+        if (isset($matches['default']) && '' !== $matches['default']) {
             throw new ParameterSpecBuilderException('Variadic parameter should have no default value');
         }
 

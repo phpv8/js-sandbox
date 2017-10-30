@@ -109,9 +109,9 @@ class FunctionSpecBuilderTest extends TestCase
 
     public function testBuildSpecWithParams()
     {
-        $this->parameterSpecBuilderShouldBuildOn('param one', 'param two = "default"', 'rest ...params');
+        $this->parameterSpecBuilderShouldBuildOn('one: param', 'two = "default": param', '...params: rest');
 
-        $spec = $this->builder->build('(param one, param two = "default", rest ...params)');
+        $spec = $this->builder->build('(one: param, two = "default": param, ...params: rest)');
 
         $this->assertInstanceOf(FunctionSpecInterface::class, $spec);
         $this->assertFalse($spec->needsExecutionContext());

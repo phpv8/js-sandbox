@@ -69,7 +69,7 @@ class ParameterSpecBuilderTest extends TestCase
     {
         $this->extractorDefinitionShouldBuildOn('type');
 
-        $spec = $this->builder->build('type param');
+        $spec = $this->builder->build('param: type');
 
         $this->assertInstanceOf(MandatoryParameterSpec::class, $spec);
 
@@ -81,7 +81,7 @@ class ParameterSpecBuilderTest extends TestCase
     {
         $this->extractorDefinitionShouldBuildOn('instance( Some\Class )');
 
-        $spec = $this->builder->build('instance( Some\Class ) param');
+        $spec = $this->builder->build('param : instance( Some\Class )');
 
         $this->assertInstanceOf(MandatoryParameterSpec::class, $spec);
 
@@ -93,7 +93,7 @@ class ParameterSpecBuilderTest extends TestCase
     {
         $this->extractorDefinitionShouldBuildOn('foo|bar');
 
-        $spec = $this->builder->build('foo|bar param');
+        $spec = $this->builder->build('param: foo|bar');
 
         $this->assertInstanceOf(MandatoryParameterSpec::class, $spec);
 
@@ -111,7 +111,7 @@ class ParameterSpecBuilderTest extends TestCase
     {
         $this->extractorDefinitionShouldBuildOn('type');
 
-        $spec = $this->builder->build('type param = ' . $raw_default);
+        $spec = $this->builder->build('param = ' . $raw_default . ': type');
 
         $this->assertInstanceOf(OptionalParameterSpec::class, $spec);
 
@@ -124,7 +124,7 @@ class ParameterSpecBuilderTest extends TestCase
     {
         $this->extractorDefinitionShouldBuildOn('type');
 
-        $spec = $this->builder->build('type ...param');
+        $spec = $this->builder->build('...param: type');
 
         $this->assertInstanceOf(VariadicParameterSpec::class, $spec);
 
@@ -138,7 +138,7 @@ class ParameterSpecBuilderTest extends TestCase
      */
     public function testBuildingVariadicParameterWithDefaultValueShouldThrowException()
     {
-        $this->builder->build('type ...param = []');
+        $this->builder->build('...param = []: type');
     }
 
     /**
@@ -149,7 +149,7 @@ class ParameterSpecBuilderTest extends TestCase
     {
         $this->extractorDefinitionShouldThrowOn('fail');
 
-        $this->builder->build('fail param');
+        $this->builder->build('param :fail');
     }
 
 
