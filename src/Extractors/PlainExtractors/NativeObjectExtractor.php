@@ -26,7 +26,7 @@ use V8\ObjectValue;
 use V8\Value;
 
 
-class InstanceExtractor implements PlainExtractorInterface
+class NativeObjectExtractor implements PlainExtractorInterface
 {
     /**
      * @var ExtractorsObjectStoreInterface
@@ -54,12 +54,12 @@ class InstanceExtractor implements PlainExtractorInterface
                         }
                     }
 
-                    throw new ExtractorException('Instance value constraint failed: value is not an instance of given classes/interfaces');
+                    throw new ExtractorException('Native object value constraint failed: value is not an instance of given classes/interfaces');
                 }
 
                 return $instance;
             } catch (UnexpectedValueException $e) {
-                throw new ExtractorException('Unable to find instance for the given object');
+                throw new ExtractorException('Unable to find bound native object');
             }
         }
 

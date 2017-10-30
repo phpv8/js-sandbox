@@ -17,6 +17,7 @@ namespace Pinepain\JsSandbox\Extractors\PlainExtractors;
 
 
 use Pinepain\JsSandbox\Extractors\Definition\PlainExtractorDefinitionInterface;
+use Pinepain\JsSandbox\Extractors\ExtractorException;
 use Pinepain\JsSandbox\Extractors\ExtractorInterface;
 use V8\Context;
 use V8\Value;
@@ -28,10 +29,10 @@ interface PlainExtractorInterface
      * @param Context                           $context
      * @param Value                             $value
      * @param PlainExtractorDefinitionInterface $definition
-     *
      * @param ExtractorInterface                $extractor
      *
      * @return mixed
+     * @throws ExtractorException
      */
     public function extract(Context $context, Value $value, PlainExtractorDefinitionInterface $definition, ExtractorInterface $extractor);
 }

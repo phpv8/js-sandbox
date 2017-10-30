@@ -35,7 +35,7 @@ use Pinepain\JsSandbox\Extractors\PlainExtractors\BoolExtractor;
 use Pinepain\JsSandbox\Extractors\PlainExtractors\DateExtractor;
 use Pinepain\JsSandbox\Extractors\PlainExtractors\DateTimeExtractor;
 use Pinepain\JsSandbox\Extractors\PlainExtractors\FunctionExtractor;
-use Pinepain\JsSandbox\Extractors\PlainExtractors\InstanceExtractor;
+use Pinepain\JsSandbox\Extractors\PlainExtractors\NativeObjectExtractor;
 use Pinepain\JsSandbox\Extractors\PlainExtractors\JsonableExtractor;
 use Pinepain\JsSandbox\Extractors\PlainExtractors\JsonExtractor;
 use Pinepain\JsSandbox\Extractors\PlainExtractors\NullExtractor;
@@ -249,7 +249,7 @@ class JsSandboxServiceProvider extends ServiceProvider
             $collection->put('datetime', $datetime = new DateTimeExtractor());
             $collection->put('object', $object = new ObjectExtractor());
             $collection->put('function', $function = new FunctionExtractor());
-            $collection->put('instance', $instance = $app->make(InstanceExtractor::class));
+            $collection->put('native_object', $instance = $app->make(NativeObjectExtractor::class));
 
             $collection->put('assoc', $assoc = new AssocExtractor());
             $collection->put('json', $json = new JsonExtractor());
