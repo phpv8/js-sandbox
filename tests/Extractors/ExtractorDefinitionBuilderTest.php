@@ -4,11 +4,14 @@
 namespace Pinepain\JsSandbox\Tests\Extractors;
 
 
+use PHPUnit\Framework\TestCase;
+use Pinepain\JsSandbox\Extractors\Definition\ExtractorDefinitionInterface;
 use Pinepain\JsSandbox\Extractors\Definition\PlainExtractorDefinitionInterface;
+use Pinepain\JsSandbox\Extractors\Definition\VariableExtractorDefinition;
 use Pinepain\JsSandbox\Extractors\Definition\VariableExtractorDefinitionInterface;
 use Pinepain\JsSandbox\Extractors\ExtractorDefinitionBuilder;
-use PHPUnit\Framework\TestCase;
 use Pinepain\JsSandbox\Extractors\ExtractorDefinitionBuilderInterface;
+use UnexpectedValueException;
 
 
 class ExtractorDefinitionBuilderTest extends TestCase
@@ -41,6 +44,24 @@ class ExtractorDefinitionBuilderTest extends TestCase
         $this->builder->build('!invalid!');
     }
 
+    /**
+     * @expectedException \Pinepain\JsSandbox\Extractors\ExtractorDefinitionBuilderException
+     * @expectedExceptionMessage Unable to parse definition: '()'
+     */
+    public function testBuildingFromEmptyGroupShouldThrowException()
+    {
+        $this->builder->build('()');
+    }
+
+    /**
+     * @expectedException \Pinepain\JsSandbox\Extractors\ExtractorDefinitionBuilderException
+     * @expectedExceptionMessage Unable to parse definition: '()[]'
+     */
+    public function testBuildingEmptyGroupArrayedDefinition()
+    {
+        $this->builder->build('()[]');
+    }
+
     public function testBuildingPlainDefinition()
     {
         $definition = $this->builder->build('test');
@@ -51,6 +72,37 @@ class ExtractorDefinitionBuilderTest extends TestCase
         $this->assertNull($definition->getNext());
         $this->assertCount(1, $definition->getVariations());
         $this->assertSame($definition, $definition->getVariations()[0]);
+    }
+
+    public function testBuildingEmptyArrayDefinition()
+    {
+        $definition = $this->builder->build('[]');
+
+        $this->assertInstanceOf(PlainExtractorDefinitionInterface::class, $definition);
+
+        $this->assertSame('[]', $definition->getName());
+        $this->assertNull($definition->getNext());
+        $this->assertCount(1, $definition->getVariations());
+        $this->assertSame($definition, $definition->getVariations()[0]);
+    }
+
+    public function testBuildingEmptyArrayWithNestedEmptyArrayDefinition()
+    {
+        $definition = $this->builder->build('[][]');
+
+        $this->assertInstanceOf(PlainExtractorDefinitionInterface::class, $definition);
+
+        $this->assertSame('[]', $definition->getName());
+        $this->assertInstanceOf(PlainExtractorDefinitionInterface::class, $definition->getNext());
+        $this->assertCount(1, $definition->getVariations());
+        $this->assertSame($definition, $definition->getVariations()[0]);
+
+        $next = $definition->getNext();
+
+        $this->assertSame('[]', $next->getName());
+        $this->assertNull($next->getNext());
+        $this->assertCount(1, $next->getVariations());
+        $this->assertSame($next, $next->getVariations()[0]);
     }
 
     public function testBuildingPlainDefinitionWithEmptyNestedDefinition()
@@ -185,5 +237,150 @@ class ExtractorDefinitionBuilderTest extends TestCase
         $this->assertNull($variation->getNext());
         $this->assertCount(1, $variation->getVariations());
         $this->assertSame($variation, $variation->getVariations()[0]);
+    }
+
+    public function testBuildingPlainDefinitionArrayed()
+    {
+        $definition = $this->builder->build('test[]');
+
+        $this->assertInstanceOf(PlainExtractorDefinitionInterface::class, $definition);
+
+        $this->assertSame('[]', $definition->getName());
+        $this->assertInstanceOf(PlainExtractorDefinitionInterface::class, $definition->getNext());
+        $this->assertCount(1, $definition->getVariations());
+        $this->assertSame($definition, $definition->getVariations()[0]);
+
+        $next = $definition->getNext();
+
+        $this->assertSame('test', $next->getName());
+        $this->assertNull($next->getNext());
+        $this->assertCount(1, $next->getVariations());
+        $this->assertSame($next, $next->getVariations()[0]);
+    }
+
+    public function testBuildingPlainGroupedDefinition()
+    {
+        $definition = $this->builder->build('(test)');
+
+        $this->assertInstanceOf(PlainExtractorDefinitionInterface::class, $definition);
+
+        $this->assertSame('test', $definition->getName());
+        $this->assertNull($definition->getNext());
+        $this->assertCount(1, $definition->getVariations());
+    }
+
+    public function testBuildingVariableDefinitionGrouped()
+    {
+        $definition = $this->builder->build('(test|alternative|definition)');
+
+        $this->assertInstanceOf(VariableExtractorDefinitionInterface::class, $definition);
+
+        $this->assertNull($definition->getName());
+        $this->assertNull($definition->getNext());
+        $this->assertCount(3, $definition->getVariations());
+        $this->assertContainsOnlyInstancesOf(PlainExtractorDefinitionInterface::class, $definition->getVariations());
+
+        $variation = $definition->getVariations()[0];
+        $this->assertSame('test', $variation->getName());
+        $this->assertNull($variation->getNext());
+        $this->assertCount(1, $variation->getVariations());
+        $this->assertSame($variation, $variation->getVariations()[0]);
+
+        $variation = $definition->getVariations()[1];
+        $this->assertSame('alternative', $variation->getName());
+        $this->assertNull($variation->getNext());
+        $this->assertCount(1, $variation->getVariations());
+        $this->assertSame($variation, $variation->getVariations()[0]);
+
+        $variation = $definition->getVariations()[2];
+        $this->assertSame('definition', $variation->getName());
+        $this->assertNull($variation->getNext());
+        $this->assertCount(1, $variation->getVariations());
+        $this->assertSame($variation, $variation->getVariations()[0]);
+    }
+
+    public function testBuildingVariableDefinitionGroupedAndArrayed()
+    {
+        $definition = $this->builder->build('(test|alternative|definition)[]');
+
+        $this->assertInstanceOf(PlainExtractorDefinitionInterface::class, $definition);
+
+        $this->assertSame('[]', $definition->getName());
+        $this->assertInstanceOf(VariableExtractorDefinition::class, $definition->getNext());
+        $this->assertCount(1, $definition->getVariations());
+
+        $definition = $definition->getNext();
+
+        $variation = $definition->getVariations()[0];
+        $this->assertSame('test', $variation->getName());
+        $this->assertNull($variation->getNext());
+        $this->assertCount(1, $variation->getVariations());
+        $this->assertSame($variation, $variation->getVariations()[0]);
+
+        $variation = $definition->getVariations()[1];
+        $this->assertSame('alternative', $variation->getName());
+        $this->assertNull($variation->getNext());
+        $this->assertCount(1, $variation->getVariations());
+        $this->assertSame($variation, $variation->getVariations()[0]);
+
+        $variation = $definition->getVariations()[2];
+        $this->assertSame('definition', $variation->getName());
+        $this->assertNull($variation->getNext());
+        $this->assertCount(1, $variation->getVariations());
+        $this->assertSame($variation, $variation->getVariations()[0]);
+    }
+
+    public function testBuildingGroupedAndNested()
+    {
+        $definition = $this->builder->build('(foo(bar))');
+
+        $str = $this->stringifyDefinition($definition);
+
+        $this->assertSame('foo(bar)', $str);
+    }
+
+    public function testBuildingGroupedAndNestedAndVariableComplex()
+    {
+        $definition = $this->builder->build('(foo(bar)|(bar(baz)|baz(bar(foo))))');
+
+        $str = $this->stringifyDefinition($definition);
+
+        $this->assertSame('foo(bar)|bar(baz)|baz(bar(foo))', $str);
+    }
+
+    public function testBuildingGroupedAndNestedAndVariableComplexArrayed()
+    {
+        $definition = $this->builder->build('(foo(bar)|(bar(baz)|baz(bar(foo))[]))');
+
+        $str = $this->stringifyDefinition($definition);
+
+        $this->assertSame('foo(bar)|bar(baz)|baz(bar(foo))[]', $str);
+    }
+
+
+    protected function stringifyDefinition(ExtractorDefinitionInterface $definition)
+    {
+        if ($definition instanceof PlainExtractorDefinitionInterface) {
+            // build plain
+
+            $name = $definition->getName();
+
+            if ('[]' == $name) {
+                return $this->stringifyDefinition($definition->getNext()) . $name;
+            } elseif ($definition->getNext()) {
+                return $name . '(' . $this->stringifyDefinition($definition->getNext()) . ')';
+            }
+
+            return $name;
+        } elseif ($definition instanceof VariableExtractorDefinitionInterface) {
+            $variations = [];
+            foreach ($definition->getVariations() as $v) {
+                $variations[] = $this->stringifyDefinition($v);
+            }
+
+            return implode('|', $variations);
+        } else {
+            throw new UnexpectedValueException('Unexpected value type');
+        }
     }
 }
