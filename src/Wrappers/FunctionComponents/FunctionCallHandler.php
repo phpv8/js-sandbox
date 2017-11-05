@@ -65,8 +65,6 @@ class FunctionCallHandler implements FunctionCallHandlerInterface
             $spec     = $function->getSpec();
             $callback = $function->getCallback();
 
-            $arguments = $this->arguments_extractor->extract($args, $spec);
-
             if ($spec->getDecorators()) {
                 // When we have decorators, we need executions context.
                 // Execution context is simple and abstract way to write advanced functions which relies on existent
@@ -77,6 +75,8 @@ class FunctionCallHandler implements FunctionCallHandlerInterface
                 $callback = $this->decorator->decorate($callback, $spec, $exec);
             }
 
+            $arguments = $this->arguments_extractor->extract($args, $spec);
+            
             try {
                 $ret = $callback(...$arguments);
             } catch (Throwable $e) {
