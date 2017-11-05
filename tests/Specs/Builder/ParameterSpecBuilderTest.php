@@ -97,6 +97,18 @@ class ParameterSpecBuilderTest extends TestCase
         $this->assertInstanceOf(ExtractorDefinitionInterface::class, $spec->getExtractorDefinition());
     }
 
+    public function testBuildingMandatoryParameterWithDashedType()
+    {
+        $this->extractorDefinitionShouldBuildOn('type-dash');
+
+        $spec = $this->builder->build('param: type-dash');
+
+        $this->assertInstanceOf(MandatoryParameterSpec::class, $spec);
+
+        $this->assertSame('param', $spec->getName());
+        $this->assertInstanceOf(ExtractorDefinitionInterface::class, $spec->getExtractorDefinition());
+    }
+
     public function testBuildingMandatoryParameterWithComplexType()
     {
         $this->extractorDefinitionShouldBuildOn('instance( Some\Class )');

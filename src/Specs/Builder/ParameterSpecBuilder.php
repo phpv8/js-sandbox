@@ -60,7 +60,7 @@ class ParameterSpecBuilder implements ParameterSpecBuilderInterface
             \s*
             \:
             \s*
-            (?<type>(\w*(?:\(.*\))?(?:\[\s*\])?)(?:\s*\|\s*(?-1))*)
+            (?<type>([\w\-]*(?:\(.*\))?(?:\[\s*\])?)(?:\s*\|\s*(?-1))*)
             \s*
         )?
         $

@@ -271,7 +271,7 @@ class JsSandboxServiceProvider extends ServiceProvider
             $collection->put('datetime', $datetime = new DateTimeExtractor());
             $collection->put('object', $object = new ObjectExtractor());
             $collection->put('function', $function = new FunctionExtractor());
-            $collection->put('native_object', $instance = $app->make(NativeObjectExtractor::class));
+            $collection->put('native-object', $instance = $app->make(NativeObjectExtractor::class));
 
             $collection->put('assoc', $assoc = new AssocExtractor());
             $collection->put('json', $json = new JsonExtractor());
