@@ -24,7 +24,6 @@ use Pinepain\JsSandbox\Specs\Parameters\MandatoryParameterSpec;
 use Pinepain\JsSandbox\Specs\Parameters\OptionalParameterSpec;
 use Pinepain\JsSandbox\Specs\Parameters\ParameterSpecInterface;
 use Pinepain\JsSandbox\Specs\Parameters\VariadicParameterSpec;
-use function strlen;
 
 
 class ParameterSpecBuilder implements ParameterSpecBuilderInterface
@@ -138,6 +137,10 @@ class ParameterSpecBuilder implements ParameterSpecBuilderInterface
             } catch (ArgumentValueBuilderException $e) {
                 throw new ParameterSpecBuilderException("Unknown or unsupported default value format '{$default_definition}'");
             }
+
+            if (!$this->hasType($matches)) {
+                $matches['type'] = $this->guessTypeFromDefault($default);
+            }
         }
 
         return new OptionalParameterSpec($matches['name'], $this->extractor->build($matches['type']), $default);
@@ -162,8 +165,9 @@ class ParameterSpecBuilder implements ParameterSpecBuilderInterface
             throw new ParameterSpecBuilderException('Variadic parameter could have no default value');
         }
 
-        if (!$this->hasType($matches)) {
-            $matches['type'] = 'any'; // special case
+        if (!$this->hasDefault($matches) && !$this->hasType($matches)) {
+            // special case when no default value set and no type provided
+            $matches['type'] = 'any';
         }
 
         return $matches;
@@ -187,5 +191,28 @@ class ParameterSpecBuilder implements ParameterSpecBuilderInterface
     private function hasDefault(array $matches): bool
     {
         return isset($matches['default']) && '' !== $matches['default'];
+    }
+
+    private function guessTypeFromDefault($default): string
+    {
+        if (is_array($default)) {
+            return '[]';
+        }
+
+        if (is_numeric($default)) {
+            return 'number';
+        }
+
+        if (is_bool($default)) {
+            return 'bool';
+        }
+
+        if (is_string($default)) {
+            return 'string';
+        }
+
+        // it looks like we have nullable parameter which could be anything
+
+        return 'any';
     }
 }

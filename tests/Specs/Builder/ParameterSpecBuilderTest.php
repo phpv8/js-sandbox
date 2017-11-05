@@ -210,6 +210,118 @@ class ParameterSpecBuilderTest extends TestCase
         $this->assertInstanceOf(ExtractorDefinitionInterface::class, $spec->getExtractorDefinition());
     }
 
+    public function testBuildingParameterWithArrayTypeGuessing()
+    {
+        $this->argumentDefinitionShouldBuildOn('[]');
+        $this->extractorDefinitionShouldBuildOn('[]');
+
+        $spec = $this->builder->build('param = []');
+
+        $this->assertInstanceOf(OptionalParameterSpec::class, $spec);
+
+        $this->assertSame('param', $spec->getName());
+        $this->assertSame([], $spec->getDefaultValue());
+        $this->assertInstanceOf(ExtractorDefinitionInterface::class, $spec->getExtractorDefinition());
+    }
+
+    public function testBuildingParameterWithBoolTrueTypeGuessing()
+    {
+        $this->argumentDefinitionShouldBuildOn('true');
+        $this->extractorDefinitionShouldBuildOn('bool');
+
+        $spec = $this->builder->build('param = true');
+
+        $this->assertInstanceOf(OptionalParameterSpec::class, $spec);
+
+        $this->assertSame('param', $spec->getName());
+        $this->assertSame(true, $spec->getDefaultValue());
+        $this->assertInstanceOf(ExtractorDefinitionInterface::class, $spec->getExtractorDefinition());
+    }
+
+    public function testBuildingParameterWithBoolFalseTypeGuessing()
+    {
+        $this->argumentDefinitionShouldBuildOn('false');
+        $this->extractorDefinitionShouldBuildOn('bool');
+
+        $spec = $this->builder->build('param = false');
+
+        $this->assertInstanceOf(OptionalParameterSpec::class, $spec);
+
+        $this->assertSame('param', $spec->getName());
+        $this->assertSame(false, $spec->getDefaultValue());
+        $this->assertInstanceOf(ExtractorDefinitionInterface::class, $spec->getExtractorDefinition());
+    }
+
+    public function testBuildingParameterWithNullableTypeGuessing()
+    {
+        $this->argumentDefinitionShouldBuildOn('null');
+        $this->extractorDefinitionShouldBuildOn('any');
+
+        $spec = $this->builder->build('param?');
+
+        $this->assertInstanceOf(OptionalParameterSpec::class, $spec);
+
+        $this->assertSame('param', $spec->getName());
+        $this->assertSame(null, $spec->getDefaultValue());
+        $this->assertInstanceOf(ExtractorDefinitionInterface::class, $spec->getExtractorDefinition());
+    }
+
+    public function testBuildingParameterWithDefaultNullTypeGuessing()
+    {
+        $this->argumentDefinitionShouldBuildOn('null');
+        $this->extractorDefinitionShouldBuildOn('any');
+
+        $spec = $this->builder->build('param = null');
+
+        $this->assertInstanceOf(OptionalParameterSpec::class, $spec);
+
+        $this->assertSame('param', $spec->getName());
+        $this->assertSame(null, $spec->getDefaultValue());
+        $this->assertInstanceOf(ExtractorDefinitionInterface::class, $spec->getExtractorDefinition());
+    }
+
+    public function testBuildingParameterWithDefaultIntNumberTypeGuessing()
+    {
+        $this->argumentDefinitionShouldBuildOn('123');
+        $this->extractorDefinitionShouldBuildOn('number');
+
+        $spec = $this->builder->build('param = 123');
+
+        $this->assertInstanceOf(OptionalParameterSpec::class, $spec);
+
+        $this->assertSame('param', $spec->getName());
+        $this->assertEquals(123, $spec->getDefaultValue());
+        $this->assertInstanceOf(ExtractorDefinitionInterface::class, $spec->getExtractorDefinition());
+    }
+
+    public function testBuildingParameterWithDefaultFloatNumberTypeGuessing()
+    {
+        $this->argumentDefinitionShouldBuildOn('123.42');
+        $this->extractorDefinitionShouldBuildOn('number');
+
+        $spec = $this->builder->build('param = 123.42');
+
+        $this->assertInstanceOf(OptionalParameterSpec::class, $spec);
+
+        $this->assertSame('param', $spec->getName());
+        $this->assertSame(123.42, $spec->getDefaultValue());
+        $this->assertInstanceOf(ExtractorDefinitionInterface::class, $spec->getExtractorDefinition());
+    }
+
+    public function testBuildingParameterWithDefaultStringTypeGuessing()
+    {
+        $this->argumentDefinitionShouldBuildOn('"test"');
+        $this->extractorDefinitionShouldBuildOn('string');
+
+        $spec = $this->builder->build('param = "test"');
+
+        $this->assertInstanceOf(OptionalParameterSpec::class, $spec);
+
+        $this->assertSame('param', $spec->getName());
+        $this->assertSame('"test"', $spec->getDefaultValue());
+        $this->assertInstanceOf(ExtractorDefinitionInterface::class, $spec->getExtractorDefinition());
+    }
+
     /**
      * @expectedException \Pinepain\JsSandbox\Specs\Builder\Exceptions\ParameterSpecBuilderException
      * @expectedExceptionMessage Unable to parse definition because of extractor failure: ExtractorDefinitionBuilder exception for testing
@@ -223,9 +335,31 @@ class ParameterSpecBuilderTest extends TestCase
 
     protected function argumentDefinitionShouldBuildOn($name)
     {
+        $retval = $name;
+
+        if ('[]' == $name) {
+            $retval = [];
+        }
+
+        if ('true' === $name) {
+            $retval = true;
+        }
+
+        if ('false' === $name) {
+            $retval = false;
+        }
+
+        if (is_numeric($name)) {
+            $retval = is_int($name) ? (int)$name : (float) $name;
+        }
+
+        if ('null' === $name) {
+            $retval = null;
+        }
+
         $this->argument_builder->method('build')
                                ->with($name, false)
-                               ->willReturn($name);
+                               ->willReturn($retval);
     }
 
     protected function argumentDefinitionShouldThrowOn($name)

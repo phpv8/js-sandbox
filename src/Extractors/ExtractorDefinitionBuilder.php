@@ -181,11 +181,6 @@ class ExtractorDefinitionBuilder implements ExtractorDefinitionBuilderInterface
         return $definition;
     }
 
-    /**
-     * @param array $matches
-     *
-     * @return int
-     */
     private function getDepth(array $matches): int
     {
         if (!isset($matches['arr']) || '' === $matches['arr']) {
