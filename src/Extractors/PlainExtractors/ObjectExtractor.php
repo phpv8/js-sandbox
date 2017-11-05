@@ -36,7 +36,7 @@ class ObjectExtractor implements PlainExtractorInterface
             if ($definition->getNext()) {
                 // we have value constraint
                 try {
-                    return $extractor->extract($context, $value, $definition->getNext());
+                    $extractor->extract($context, $value, $definition->getNext());
                 } catch (ExtractorException $e) {
                     throw new ExtractorException('Object value constraint failed: ' . $e->getMessage());
                 }
