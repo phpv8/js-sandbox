@@ -100,7 +100,7 @@ class PropertySpecBuilder implements PropertySpecBuilderInterface
             return;
         }
 
-        if (preg_match('/^(?<type>\w+(?:\(.*\))?)$/', $definition, $matches)) {
+        if (preg_match('/^(?<type>([\w\-]*(?:\(.*\))?(?:\[\s*\])?)(?:\s*\|\s*(?-1))*)$/', $definition, $matches)) {
             $proto->definition = $this->builder->build($matches['type']);
 
             return;

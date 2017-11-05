@@ -87,6 +87,34 @@ class PropertySpecBuilderTest extends TestCase
         $this->assertNull($spec->getSetterName());
     }
 
+    public function testBuildingTypedArray()
+    {
+        $this->extractorDefinitionShouldBuildOn('[]');
+
+        $spec = $this->builder->build('[]');
+
+        $this->assertInstanceOf(PropertySpecInterface::class, $spec);
+
+        $this->assertInstanceOf(ExtractorDefinitionInterface::class, $spec->getExtractorDefinition());
+        $this->assertFalse($spec->isReadonly());
+        $this->assertNull($spec->getGetterName());
+        $this->assertNull($spec->getSetterName());
+    }
+
+    public function testBuildingTypedAndGroupedArray()
+    {
+        $this->extractorDefinitionShouldBuildOn('(foo|bar[])[]');
+
+        $spec = $this->builder->build('(foo|bar[])[]');
+
+        $this->assertInstanceOf(PropertySpecInterface::class, $spec);
+
+        $this->assertInstanceOf(ExtractorDefinitionInterface::class, $spec->getExtractorDefinition());
+        $this->assertFalse($spec->isReadonly());
+        $this->assertNull($spec->getGetterName());
+        $this->assertNull($spec->getSetterName());
+    }
+
     public function testBuildingReadonlyTyped()
     {
         $this->extractorDefinitionShouldBuildOn('test');
