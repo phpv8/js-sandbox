@@ -29,6 +29,10 @@ class FunctionCallHandler implements FunctionCallHandlerInterface
      */
     private $arguments_extractor;
     /**
+     * @var FunctionDecoratorInterface
+     */
+    private $decorator;
+    /**
      * @var FunctionExceptionHandlerInterface
      */
     private $exception_handler;
@@ -38,13 +42,19 @@ class FunctionCallHandler implements FunctionCallHandlerInterface
     private $return_setter;
 
     /**
-     * @param ArgumentsExtractorInterface       $arguments_extractor
+     * @param ArgumentsExtractorInterface $arguments_extractor
+     * @param FunctionDecoratorInterface $decorator
      * @param FunctionExceptionHandlerInterface $exception_handler
-     * @param ReturnValueSetterInterface        $return_setter
+     * @param ReturnValueSetterInterface $return_setter
      */
-    public function __construct(ArgumentsExtractorInterface $arguments_extractor, FunctionExceptionHandlerInterface $exception_handler, ReturnValueSetterInterface $return_setter)
-    {
+    public function __construct(
+        ArgumentsExtractorInterface $arguments_extractor,
+        FunctionDecoratorInterface $decorator,
+        FunctionExceptionHandlerInterface $exception_handler,
+        ReturnValueSetterInterface $return_setter
+    ) {
         $this->arguments_extractor = $arguments_extractor;
+        $this->decorator           = $decorator;
         $this->exception_handler   = $exception_handler;
         $this->return_setter       = $return_setter;
     }
@@ -54,12 +64,14 @@ class FunctionCallHandler implements FunctionCallHandlerInterface
         return function (FunctionCallbackInfo $args) use ($callback, $spec, $cold_execution_context) {
             $arguments = $this->arguments_extractor->extract($args, $spec);
 
-            if ($spec->needsExecutionContext()) {
+            if ($spec->getDecorators()) {
+                // When we have decorators, we need executions context.
                 // Execution context is simple and abstract way to write advanced functions which relies on existent
                 // abstraction level but at the same time allow manipulate on a lower level, e.g. examine current
                 // context, building rich v8 native objects, but not limited to.
-                $execution_context = $cold_execution_context->warm($args, $spec);
-                array_unshift($arguments, $execution_context);
+                $exec = $cold_execution_context->warm($args, $spec);
+
+                $callback = $this->decorator->decorate($callback, $spec, $exec);
             }
 
             try {

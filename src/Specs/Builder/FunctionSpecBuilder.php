@@ -16,6 +16,7 @@
 namespace Pinepain\JsSandbox\Specs\Builder;
 
 
+use Pinepain\JsSandbox\Decorators\DecoratorSpecBuilderInterface;
 use Pinepain\JsSandbox\Specs\Builder\Exceptions\FunctionSpecBuilderException;
 use Pinepain\JsSandbox\Specs\FunctionSpec;
 use Pinepain\JsSandbox\Specs\FunctionSpecInterface;
@@ -32,6 +33,11 @@ use Pinepain\JsSandbox\Specs\ThrowSpec\ThrowSpecListInterface;
 class FunctionSpecBuilder implements FunctionSpecBuilderInterface
 {
     /**
+     * @var DecoratorSpecBuilderInterface
+     */
+    private $decorator;
+
+    /**
      * @var ParameterSpecBuilderInterface
      */
     private $builder;
@@ -44,10 +50,43 @@ class FunctionSpecBuilder implements FunctionSpecBuilderInterface
      */
     private $default_return_type = 'any';
 
+    private $regexp = '/
+        ^
+        \s*
+        (?<decorators>
+            \s*
+            (?:\@[\w-]+(?:\s*\([^\)]*\)\s*)?\s*)+
+            \s*
+        )?
+        \(
+            \s*
+            (?<params>([^,]+)(?:\s*,\s*[^,]+)*)?
+            \s*
+        \)
+        (?:
+            \s*
+            \:
+            \s*
+            (?<return>\w+\b)?
+            \s*
+        )?
+        (?:
+            \s*
+            throws
+            \s*
+            (?<throws>(\\\\?[a-z][\w\\\\]+)(?:\s*\,\s*(?-1))*)?
+            \s*
+        )?
+        \s*
+        $
+        /xi';
 
-    public function __construct(ParameterSpecBuilderInterface $builder)
+    private $decorators_regexp = '/([^\@"\']+)|("([^"]*)")|(\'([^\']*)\')/i';
+
+    public function __construct(DecoratorSpecBuilderInterface $decorator, ParameterSpecBuilderInterface $builder)
     {
-        $this->builder = $builder;
+        $this->decorator = $decorator;
+        $this->builder   = $builder;
 
         $this->return_types = [
             'any'  => new AnyReturnSpec(),
@@ -66,15 +105,14 @@ class FunctionSpecBuilder implements FunctionSpecBuilderInterface
             throw new FunctionSpecBuilderException('Definition must be non-empty string');
         }
 
-        if (preg_match('/^(?<return>\w+\b)?\s*(?<needs_context>\!)?\s*\(\s*(?<params>([^,]+)(?:\s*,\s*[^,]+)*)?\s*\)\s*(?<throws>(\\\\?[a-z][\w\\\\]+)(?:\s*\|\s*(?-1))*)?\s*$/i', $definition, $matches)) {
+        if (preg_match($this->regexp, $definition, $matches)) {
 
-            $needs_context = isset($matches['needs_context']) && $matches['needs_context'];
+            $decorators = $this->getDecoratorsList($matches['decorators'] ?? '');
+            $params     = $this->getParametersList($matches['params'] ?? '');
+            $return     = $this->getReturnType(($matches['return'] ?? '') ?: $this->default_return_type);
+            $throws     = $this->getThrowsList($matches['throws'] ?? '');
 
-            $params = $this->getParametersList($matches['params'] ?? '');
-            $return = $this->getReturnType(($matches['return'] ?? '') ?: $this->default_return_type);
-            $throws = $this->getThrowsList($matches['throws'] ?? '');
-
-            return new FunctionSpec($params, $throws, $return, $needs_context);
+            return new FunctionSpec($params, $throws, $return, $decorators);
         }
 
         throw new FunctionSpecBuilderException("Unable to parse definition: '{$definition}'");
@@ -108,7 +146,7 @@ class FunctionSpecBuilder implements FunctionSpecBuilderInterface
         $specs = [];
 
         if ($definition) {
-            $classes = array_filter(array_map('\trim', explode('|', $definition)));
+            $classes = array_filter(array_map('\trim', explode(', ', $definition)));
 
             foreach ($classes as $class) {
                 $specs[] = new EchoThrowSpec($class);
@@ -116,5 +154,38 @@ class FunctionSpecBuilder implements FunctionSpecBuilderInterface
         }
 
         return new ThrowSpecList(...$specs);
+    }
+
+    protected function getDecoratorsList(string $definition): array
+    {
+        $definition = trim($definition);
+
+        if (!$definition) {
+            return [];
+        }
+
+        $separators = preg_split($this->decorators_regexp, $definition, -1, PREG_SPLIT_NO_EMPTY | PREG_SPLIT_OFFSET_CAPTURE);
+
+        if (!$separators) {
+            // UNEXPECTED
+            throw new FunctionSpecBuilderException("Invalid decorators: '{$definition}'");
+        }
+
+        $decorators = [];
+
+        $sequences = array_column($separators, 1);
+
+        $sequences[] = strlen($definition);
+
+        while (count($sequences) > 1) {
+            $start = array_shift($sequences);
+            $end   = $sequences[0];
+
+            $part = trim(substr($definition, $start, $end - $start));
+
+            $decorators[] = $this->decorator->build($part);
+        }
+
+        return $decorators;
     }
 }

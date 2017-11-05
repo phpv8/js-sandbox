@@ -21,6 +21,8 @@ use PHPUnit_Framework_MockObject_MockObject;
 use Pinepain\JsSandbox\Extractors\Definition\ExtractorDefinitionInterface;
 use Pinepain\JsSandbox\Extractors\ExtractorDefinitionBuilderException;
 use Pinepain\JsSandbox\Extractors\ExtractorDefinitionBuilderInterface;
+use Pinepain\JsSandbox\Specs\Builder\ArgumentValueBuilderInterface;
+use Pinepain\JsSandbox\Specs\Builder\Exceptions\ArgumentValueBuilderException;
 use Pinepain\JsSandbox\Specs\Builder\ParameterSpecBuilder;
 use Pinepain\JsSandbox\Specs\Builder\ParameterSpecBuilderInterface;
 use Pinepain\JsSandbox\Specs\Parameters\MandatoryParameterSpec;
@@ -36,15 +38,21 @@ class ParameterSpecBuilderTest extends TestCase
     protected $builder;
 
     /**
+     * @var ArgumentValueBuilderInterface|PHPUnit_Framework_MockObject_MockObject
+     */
+    protected $argument_builder;
+
+    /**
      * @var ExtractorDefinitionBuilderInterface|PHPUnit_Framework_MockObject_MockObject
      */
     protected $definition_builder;
 
     public function setUp()
     {
+        $this->argument_builder   = $this->getMockForAbstractClass(ArgumentValueBuilderInterface::class);
         $this->definition_builder = $this->getMockForAbstractClass(ExtractorDefinitionBuilderInterface::class);
 
-        $this->builder = new ParameterSpecBuilder($this->definition_builder);
+        $this->builder = new ParameterSpecBuilder($this->definition_builder, $this->argument_builder);
     }
 
     /**
@@ -63,6 +71,18 @@ class ParameterSpecBuilderTest extends TestCase
     public function testBuildingFromInvalidStringShouldThrow()
     {
         $this->builder->build('!invalid!');
+    }
+
+    public function testBuildingMandatoryParameterWithoutType()
+    {
+        $this->extractorDefinitionShouldBuildOn('any');
+
+        $spec = $this->builder->build('param');
+
+        $this->assertInstanceOf(MandatoryParameterSpec::class, $spec);
+
+        $this->assertSame('param', $spec->getName());
+        $this->assertInstanceOf(ExtractorDefinitionInterface::class, $spec->getExtractorDefinition());
     }
 
     public function testBuildingMandatoryParameter()
@@ -101,24 +121,30 @@ class ParameterSpecBuilderTest extends TestCase
         $this->assertInstanceOf(ExtractorDefinitionInterface::class, $spec->getExtractorDefinition());
     }
 
-    /**
-     * @param string $raw_default
-     * @param        $expected_default
-     *
-     * @dataProvider provideValidDefaultValues
-     */
-    public function testBuildingOptionalParameter(string $raw_default, $expected_default)
+    public function testBuildingOptionalParameter()
     {
-        $this->extractorDefinitionShouldBuildOn('type');
+        $this->argumentDefinitionShouldBuildOn('"default"');
 
-        $spec = $this->builder->build('param = ' . $raw_default . ': type');
+        $spec = $this->builder->build('param = "default"');
 
         $this->assertInstanceOf(OptionalParameterSpec::class, $spec);
 
         $this->assertSame('param', $spec->getName());
-        $this->assertSame($expected_default, $spec->getDefaultValue());
+        $this->assertSame('"default"', $spec->getDefaultValue());
         $this->assertInstanceOf(ExtractorDefinitionInterface::class, $spec->getExtractorDefinition());
     }
+
+    /**
+     * @expectedException \Pinepain\JsSandbox\Specs\Builder\Exceptions\ParameterSpecBuilderException
+     * @expectedExceptionMessage Unknown or unsupported default value format '"throw"'
+     */
+    public function testBuildingOptionalParameterShouldThrowOnInvalidArgumentValue()
+    {
+        $this->argumentDefinitionShouldThrowOn('"throw"');
+
+        $this->builder->build('param = "throw"');
+    }
+
 
     public function testBuildingVariadicParameter()
     {
@@ -183,42 +209,18 @@ class ParameterSpecBuilderTest extends TestCase
         $this->builder->build('param :fail');
     }
 
-
-    public function provideValidDefaultValues()
+    protected function argumentDefinitionShouldBuildOn($name)
     {
-        return [
-            ['42', 42],
-            ['-1', -1],
-            ['-1.0', -1.0],
-            ['1.2345', 1.2345],
-            ['[]', []],
-            ['[ ]', []],
-            ['{}', []],
-            ['{ }', []],
-            ['null', null],
-            ['Null', null],
-            ['NulL', null],
-            ['true', true],
-            ['True', true],
-            ['TruE', true],
-            ['false', false],
-            ['False', false],
-            ['FalsE', false],
-            ['"string"', 'string'],
-            ['"StrInG"', 'StrInG'],
-            ["'string'", 'string'],
-            ["'StrInG'", 'StrInG'],
-            ['"str\'ing"', 'str\'ing'],
-            ["'str\"ing'", "str\"ing"],
-            ["' string '", ' string '],
-            ['" string "', ' string '],
-            ["''", ''],
-            ['""', ''],
-            ["'123'", '123'],
-            ['"123"', '123'],
-            ["'-123.456'", '-123.456'],
-            ['"-123.456"', '-123.456'],
-        ];
+        $this->argument_builder->method('build')
+                               ->with($name, false)
+                               ->willReturn($name);
+    }
+
+    protected function argumentDefinitionShouldThrowOn($name)
+    {
+        $this->argument_builder->method('build')
+                               ->with($name, false)
+                               ->willThrowException(new ArgumentValueBuilderException('ArgumentValueBuilderException exception for testing'));
     }
 
     protected function extractorDefinitionShouldBuildOn($name)

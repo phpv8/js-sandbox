@@ -21,6 +21,11 @@ use Illuminate\Support\ServiceProvider;
 use InvalidArgumentException;
 use Pinepain\JsSandbox\Common\NativeGlobalObjectWrapper;
 use Pinepain\JsSandbox\Common\NativeGlobalObjectWrapperInterface;
+use Pinepain\JsSandbox\Decorators\DecoratorsCollection;
+use Pinepain\JsSandbox\Decorators\DecoratorsCollectionInterface;
+use Pinepain\JsSandbox\Decorators\DecoratorSpecBuilder;
+use Pinepain\JsSandbox\Decorators\DecoratorSpecBuilderInterface;
+use Pinepain\JsSandbox\Decorators\Definitions\ExecutionContextInjectorDecorator;
 use Pinepain\JsSandbox\Extractors\Extractor;
 use Pinepain\JsSandbox\Extractors\ExtractorDefinitionBuilder;
 use Pinepain\JsSandbox\Extractors\ExtractorDefinitionBuilderInterface;
@@ -35,9 +40,9 @@ use Pinepain\JsSandbox\Extractors\PlainExtractors\BoolExtractor;
 use Pinepain\JsSandbox\Extractors\PlainExtractors\DateExtractor;
 use Pinepain\JsSandbox\Extractors\PlainExtractors\DateTimeExtractor;
 use Pinepain\JsSandbox\Extractors\PlainExtractors\FunctionExtractor;
-use Pinepain\JsSandbox\Extractors\PlainExtractors\NativeObjectExtractor;
 use Pinepain\JsSandbox\Extractors\PlainExtractors\JsonableExtractor;
 use Pinepain\JsSandbox\Extractors\PlainExtractors\JsonExtractor;
+use Pinepain\JsSandbox\Extractors\PlainExtractors\NativeObjectExtractor;
 use Pinepain\JsSandbox\Extractors\PlainExtractors\NullExtractor;
 use Pinepain\JsSandbox\Extractors\PlainExtractors\NumberExtractor;
 use Pinepain\JsSandbox\Extractors\PlainExtractors\ObjectExtractor;
@@ -47,6 +52,8 @@ use Pinepain\JsSandbox\Extractors\PlainExtractors\RegExpExtractor;
 use Pinepain\JsSandbox\Extractors\PlainExtractors\ScalarExtractor;
 use Pinepain\JsSandbox\Extractors\PlainExtractors\StringExtractor;
 use Pinepain\JsSandbox\Extractors\PlainExtractors\UndefinedExtractor;
+use Pinepain\JsSandbox\Specs\Builder\ArgumentValueBuilder;
+use Pinepain\JsSandbox\Specs\Builder\ArgumentValueBuilderInterface;
 use Pinepain\JsSandbox\Specs\Builder\BindingSpecBuilder;
 use Pinepain\JsSandbox\Specs\Builder\BindingSpecBuilderInterface;
 use Pinepain\JsSandbox\Specs\Builder\FunctionSpecBuilder;
@@ -68,6 +75,8 @@ use Pinepain\JsSandbox\Wrappers\FunctionComponents\ArgumentsExtractor;
 use Pinepain\JsSandbox\Wrappers\FunctionComponents\ArgumentsExtractorInterface;
 use Pinepain\JsSandbox\Wrappers\FunctionComponents\FunctionCallHandler;
 use Pinepain\JsSandbox\Wrappers\FunctionComponents\FunctionCallHandlerInterface;
+use Pinepain\JsSandbox\Wrappers\FunctionComponents\FunctionDecorator;
+use Pinepain\JsSandbox\Wrappers\FunctionComponents\FunctionDecoratorInterface;
 use Pinepain\JsSandbox\Wrappers\FunctionComponents\FunctionExceptionHandler;
 use Pinepain\JsSandbox\Wrappers\FunctionComponents\FunctionExceptionHandlerInterface;
 use Pinepain\JsSandbox\Wrappers\FunctionComponents\FunctionWrappersCache;
@@ -156,10 +165,21 @@ class JsSandboxServiceProvider extends ServiceProvider
     protected function registerFunctionCallHandler()
     {
         $this->app->singleton(ArgumentsExtractorInterface::class, ArgumentsExtractor::class);
+        $this->app->singleton(FunctionDecoratorInterface::class, FunctionDecorator::class);
         $this->app->singleton(FunctionExceptionHandlerInterface::class, FunctionExceptionHandler::class);
         $this->app->singleton(ReturnValueSetterInterface::class, ReturnValueSetter::class);
 
         $this->app->singleton(FunctionCallHandlerInterface::class, FunctionCallHandler::class);
+
+
+        $this->app->singleton(DecoratorsCollectionInterface::class, function (Container $app) {
+
+            $collection = new DecoratorsCollection();
+
+            $collection->put('inject-context', new ExecutionContextInjectorDecorator());
+
+            return $collection;
+        });
     }
 
     protected function registerWrapper()
@@ -221,7 +241,9 @@ class JsSandboxServiceProvider extends ServiceProvider
     {
         $this->app->singleton(ExtractorDefinitionBuilderInterface::class, ExtractorDefinitionBuilder::class);
         $this->app->singleton(PropertySpecBuilderInterface::class, PropertySpecBuilder::class);
+        $this->app->singleton(ArgumentValueBuilderInterface::class, ArgumentValueBuilder::class);
         $this->app->singleton(ParameterSpecBuilderInterface::class, ParameterSpecBuilder::class);
+        $this->app->singleton(DecoratorSpecBuilderInterface::class, DecoratorSpecBuilder::class);
         $this->app->singleton(FunctionSpecBuilderInterface::class, FunctionSpecBuilder::class);
         $this->app->singleton(BindingSpecBuilderInterface::class, BindingSpecBuilder::class);
         $this->app->singleton(ObjectSpecBuilderInterface::class, ObjectSpecBuilder::class);
@@ -282,6 +304,7 @@ class JsSandboxServiceProvider extends ServiceProvider
             CallbackGuardInterface::class,
 
             ArgumentsExtractorInterface::class,
+            FunctionDecoratorInterface::class,
             FunctionExceptionHandlerInterface::class,
             ReturnValueSetterInterface::class,
             FunctionCallHandlerInterface::class,
@@ -294,7 +317,9 @@ class JsSandboxServiceProvider extends ServiceProvider
 
             ExtractorDefinitionBuilderInterface::class,
             PropertySpecBuilderInterface::class,
-            ParameterSpecBuilderInterface::class .
+            ArgumentValueBuilderInterface::class,
+            ParameterSpecBuilderInterface::class,
+            DecoratorSpecBuilderInterface::class,
             FunctionSpecBuilderInterface::class,
             BindingSpecBuilderInterface::class,
             ObjectSpecBuilderInterface::class,
