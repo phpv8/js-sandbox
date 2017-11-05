@@ -77,7 +77,7 @@ class FunctionWrapper implements WrapperInterface, WrapperAwareInterface
 
         $cold_execution_context = new ColdExecutionContext($this->wrapper, $value);
 
-        $callback = $this->handler->wrap($value->getCallback(), $value->getSpec(), $cold_execution_context);
+        $callback = $this->handler->wrap($value, $cold_execution_context);
         $callback = $this->guard->guard($callback);
 
         $f = new FunctionObject($context, $callback);

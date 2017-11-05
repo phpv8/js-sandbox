@@ -16,8 +16,8 @@
 namespace Pinepain\JsSandbox\Wrappers\FunctionComponents;
 
 
-use Pinepain\JsSandbox\Specs\FunctionSpecInterface;
 use Pinepain\JsSandbox\Wrappers\FunctionComponents\Runtime\ColdExecutionContextInterface;
+use Pinepain\JsSandbox\Wrappers\Runtime\RuntimeFunctionInterface;
 use Throwable;
 use V8\FunctionCallbackInfo;
 
@@ -59,9 +59,12 @@ class FunctionCallHandler implements FunctionCallHandlerInterface
         $this->return_setter       = $return_setter;
     }
 
-    public function wrap(callable $callback, FunctionSpecInterface $spec, ColdExecutionContextInterface $cold_execution_context)
+    public function wrap(RuntimeFunctionInterface $function, ColdExecutionContextInterface $cold_execution_context)
     {
-        return function (FunctionCallbackInfo $args) use ($callback, $spec, $cold_execution_context) {
+        return function (FunctionCallbackInfo $args) use ($function, $cold_execution_context) {
+            $spec     = $function->getSpec();
+            $callback = $function->getCallback();
+
             $arguments = $this->arguments_extractor->extract($args, $spec);
 
             if ($spec->getDecorators()) {

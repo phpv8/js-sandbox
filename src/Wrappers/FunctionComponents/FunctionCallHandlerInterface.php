@@ -18,9 +18,10 @@ namespace Pinepain\JsSandbox\Wrappers\FunctionComponents;
 
 use Pinepain\JsSandbox\Specs\FunctionSpecInterface;
 use Pinepain\JsSandbox\Wrappers\FunctionComponents\Runtime\ColdExecutionContextInterface;
+use Pinepain\JsSandbox\Wrappers\Runtime\RuntimeFunctionInterface;
 
 
 interface FunctionCallHandlerInterface
 {
-    public function wrap(callable $callback, FunctionSpecInterface $spec, ColdExecutionContextInterface $cold_execution_context);
+    public function wrap(RuntimeFunctionInterface $function, ColdExecutionContextInterface $cold_execution_context);
 }
