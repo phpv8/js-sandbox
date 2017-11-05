@@ -256,8 +256,8 @@ class JsSandboxServiceProvider extends ServiceProvider
 
             // TODO: register basic extractor
 
+            $collection->put('[]', $array = new ArrayExtractor());
             $collection->put('raw', $raw = new RawExtractor());
-            $collection->put('array', $array = new ArrayExtractor());
             $collection->put('primitive', $primitive = new PrimitiveExtractor());
 
             $collection->put('string', $string = new StringExtractor());
