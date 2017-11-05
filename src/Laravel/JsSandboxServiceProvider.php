@@ -256,7 +256,9 @@ class JsSandboxServiceProvider extends ServiceProvider
 
             // TODO: register basic extractor
 
-            $collection->put('[]', $array = new ArrayExtractor());
+            $collection->put('[]', $array = new AssocExtractor());
+            $collection->put('array', $array = new ArrayExtractor(new AssocExtractor(false)));
+
             $collection->put('raw', $raw = new RawExtractor());
             $collection->put('primitive', $primitive = new PrimitiveExtractor());
 
@@ -273,7 +275,6 @@ class JsSandboxServiceProvider extends ServiceProvider
             $collection->put('function', $function = new FunctionExtractor());
             $collection->put('native-object', $instance = $app->make(NativeObjectExtractor::class));
 
-            $collection->put('assoc', $assoc = new AssocExtractor());
             $collection->put('json', $json = new JsonExtractor());
             $collection->put('jsonable', $json = new JsonableExtractor());
 
