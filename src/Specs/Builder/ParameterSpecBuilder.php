@@ -143,6 +143,11 @@ class ParameterSpecBuilder implements ParameterSpecBuilderInterface
             }
         }
 
+        if ($this->hasNullable($matches)) {
+            // nullable means that null is a valid value and thus we should explicitly enable null extractor here
+            $matches['type'] = 'null|' . $matches['type'];
+        }
+
         return new OptionalParameterSpec($matches['name'], $this->extractor->build($matches['type']), $default);
     }
 

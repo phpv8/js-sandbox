@@ -199,7 +199,7 @@ class ParameterSpecBuilderTest extends TestCase
 
     public function testBuildingNullableParameter()
     {
-        $this->extractorDefinitionShouldBuildOn('type');
+        $this->extractorDefinitionShouldBuildOn('null|type');
 
         $spec = $this->builder->build('param? : type');
 
@@ -255,7 +255,7 @@ class ParameterSpecBuilderTest extends TestCase
     public function testBuildingParameterWithNullableTypeGuessing()
     {
         $this->argumentDefinitionShouldBuildOn('null');
-        $this->extractorDefinitionShouldBuildOn('any');
+        $this->extractorDefinitionShouldBuildOn('null|any');
 
         $spec = $this->builder->build('param?');
 
