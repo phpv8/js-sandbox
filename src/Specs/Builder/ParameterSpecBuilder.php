@@ -35,6 +35,9 @@ class ParameterSpecBuilder implements ParameterSpecBuilderInterface
             \s*
         )?
         (?<name>[_a-z]\w*)
+        \s*
+        (?<nullable>\?)?
+        \s*
         (?:
             \s* = \s*
             (?<default>
@@ -86,13 +89,20 @@ class ParameterSpecBuilder implements ParameterSpecBuilderInterface
         }
 
         if (preg_match($this->regexp, $definition, $matches)) {
+
+            $this->validateDefinition($definition, $matches);
+
             try {
-                if ($matches['rest'] ?? false) {
+                if ($this->hasRest($matches)) {
                     return $this->buildVariadicParameterSpec($matches);
                 }
 
-                if ($matches['default'] ?? false) {
-                    return $this->buildOptionalParameterSpec($matches);
+                if ($this->hasDefault($matches)) {
+                    return $this->buildOptionalParameterSpec($matches, $matches['default']);
+                }
+
+                if ($this->hasNullable($matches)) {
+                    return $this->buildOptionalParameterSpec($matches, null);
                 }
 
                 return $this->buildMandatoryParameterSpec($matches);
@@ -106,16 +116,14 @@ class ParameterSpecBuilder implements ParameterSpecBuilderInterface
 
     protected function buildVariadicParameterSpec(array $matches): VariadicParameterSpec
     {
-        if (isset($matches['default']) && '' !== $matches['default']) {
-            throw new ParameterSpecBuilderException('Variadic parameter should have no default value');
-        }
-
         return new VariadicParameterSpec($matches['name'], $this->builder->build($matches['type']));
     }
 
-    protected function buildOptionalParameterSpec(array $matches): OptionalParameterSpec
+    protected function buildOptionalParameterSpec(array $matches, ?string $default): OptionalParameterSpec
     {
-        $default = $this->buildDefaultValue($matches['default']);
+        if (null !== $default) {
+            $default = $this->buildDefaultValue($matches['default']);
+        }
 
         return new OptionalParameterSpec($matches['name'], $this->builder->build($matches['type']), $default);
     }
@@ -166,6 +174,7 @@ class ParameterSpecBuilder implements ParameterSpecBuilderInterface
             }
         }
 
+        // UNEXPECTED
         // Less likely we will ever get here because it should fail at a parsing step, but just in case
         throw new ParameterSpecBuilderException("Unknown default value format '{$definition}'");
     }
@@ -175,5 +184,35 @@ class ParameterSpecBuilder implements ParameterSpecBuilderInterface
         assert(strlen($definition) >= 2);
 
         return $starts == $definition[0] && $ends == $definition[-1];
+    }
+
+    protected function validateDefinition(string $definition, array $matches): void
+    {
+        if ($this->hasNullable($matches) && $this->hasRest($matches)) {
+            throw new ParameterSpecBuilderException("Variadic parameter could not be nullable");
+        }
+
+        if ($this->hasNullable($matches) && $this->hasDefault($matches)) {
+            throw new ParameterSpecBuilderException("Nullable parameter could not have default value");
+        }
+
+        if ($this->hasRest($matches) && $this->hasDefault($matches)) {
+            throw new ParameterSpecBuilderException('Variadic parameter could have no default value');
+        }
+    }
+
+    private function hasNullable(array $matches): bool
+    {
+        return isset($matches['nullable']) && '' !== $matches['nullable'];
+    }
+
+    private function hasRest(array $matches): bool
+    {
+        return isset($matches['rest']) && '' !== $matches['rest'];
+    }
+
+    private function hasDefault(array $matches): bool
+    {
+        return isset($matches['default']) && '' !== $matches['default'];
     }
 }

@@ -117,7 +117,18 @@ class FunctionSpecBuilderTest extends TestCase
         $this->assertFalse($spec->needsExecutionContext());
         $this->assertContainsOnlyInstancesOf(ParameterSpecInterface::class, $spec->getParameters()->getParameters());
         $this->assertCount(3, $spec->getParameters()->getParameters());
+    }
 
+    public function testBuildSpecWithNullableParams()
+    {
+        $this->parameterSpecBuilderShouldBuildOn('one: param', 'two?: param');
+
+        $spec = $this->builder->build('(one: param, two?: param)');
+
+        $this->assertInstanceOf(FunctionSpecInterface::class, $spec);
+        $this->assertFalse($spec->needsExecutionContext());
+        $this->assertContainsOnlyInstancesOf(ParameterSpecInterface::class, $spec->getParameters()->getParameters());
+        $this->assertCount(2, $spec->getParameters()->getParameters());
     }
 
     // Test throws spec

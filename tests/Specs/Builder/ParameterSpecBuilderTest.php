@@ -134,11 +134,42 @@ class ParameterSpecBuilderTest extends TestCase
 
     /**
      * @expectedException \Pinepain\JsSandbox\Specs\Builder\Exceptions\ParameterSpecBuilderException
-     * @expectedExceptionMessage Variadic parameter should have no default value
+     * @expectedExceptionMessage Variadic parameter could have no default value
      */
     public function testBuildingVariadicParameterWithDefaultValueShouldThrowException()
     {
         $this->builder->build('...param = []: type');
+    }
+
+    /**
+     * @expectedException \Pinepain\JsSandbox\Specs\Builder\Exceptions\ParameterSpecBuilderException
+     * @expectedExceptionMessage Variadic parameter could not be nullable
+     */
+    public function testBuildingVariadicParameterWithNullableShouldThrowException()
+    {
+        $this->builder->build('...param?: type');
+    }
+
+    /**
+     * @expectedException \Pinepain\JsSandbox\Specs\Builder\Exceptions\ParameterSpecBuilderException
+     * @expectedExceptionMessage Nullable parameter could not have default value
+     */
+    public function testBuildingNullableParameterWithDefaultValueShouldThrowException()
+    {
+        $this->builder->build('param? = "default": type');
+    }
+
+    public function testBuildingNullableParameter()
+    {
+        $this->extractorDefinitionShouldBuildOn('type');
+
+        $spec = $this->builder->build('param? : type');
+
+        $this->assertInstanceOf(OptionalParameterSpec::class, $spec);
+
+        $this->assertSame('param', $spec->getName());
+        $this->assertNull($spec->getDefaultValue());
+        $this->assertInstanceOf(ExtractorDefinitionInterface::class, $spec->getExtractorDefinition());
     }
 
     /**
