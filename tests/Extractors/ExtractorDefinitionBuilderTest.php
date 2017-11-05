@@ -57,9 +57,18 @@ class ExtractorDefinitionBuilderTest extends TestCase
      * @expectedException \Pinepain\JsSandbox\Extractors\ExtractorDefinitionBuilderException
      * @expectedExceptionMessage Unable to parse definition: '()[]'
      */
-    public function testBuildingEmptyGroupArrayedDefinition()
+    public function testBuildingEmptyGroupArrayedDefinitionShouldFail()
     {
         $this->builder->build('()[]');
+    }
+
+    /**
+     * @expectedException \Pinepain\JsSandbox\Extractors\ExtractorDefinitionBuilderException
+     * @expectedExceptionMessage Unable to parse definition: '((()))[]'
+     */
+    public function testBuildingEmptyGroupArrayedDefinitionWithNestedGroups()
+    {
+        $this->builder->build('((()))[]');
     }
 
     public function testBuildingPlainDefinition()
@@ -81,7 +90,8 @@ class ExtractorDefinitionBuilderTest extends TestCase
         $this->assertInstanceOf(PlainExtractorDefinitionInterface::class, $definition);
 
         $this->assertSame('[]', $definition->getName());
-        $this->assertNull($definition->getNext());
+        $this->assertInstanceOf(PlainExtractorDefinitionInterface::class, $definition->getNext());
+        $this->assertSame('any', $definition->getNext()->getName());
         $this->assertCount(1, $definition->getVariations());
         $this->assertSame($definition, $definition->getVariations()[0]);
     }
@@ -100,7 +110,8 @@ class ExtractorDefinitionBuilderTest extends TestCase
         $next = $definition->getNext();
 
         $this->assertSame('[]', $next->getName());
-        $this->assertNull($next->getNext());
+        $this->assertInstanceOf(PlainExtractorDefinitionInterface::class, $next->getNext());
+        $this->assertSame('any', $next->getNext()->getName());
         $this->assertCount(1, $next->getVariations());
         $this->assertSame($next, $next->getVariations()[0]);
     }

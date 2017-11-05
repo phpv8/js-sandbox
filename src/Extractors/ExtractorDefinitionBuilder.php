@@ -19,6 +19,7 @@ namespace Pinepain\JsSandbox\Extractors;
 use Pinepain\JsSandbox\Extractors\Definition\ExtractorDefinitionInterface;
 use Pinepain\JsSandbox\Extractors\Definition\PlainExtractorDefinition;
 use Pinepain\JsSandbox\Extractors\Definition\PlainExtractorDefinitionInterface;
+use Pinepain\JsSandbox\Extractors\Definition\RecursiveExtractorDefinition;
 use Pinepain\JsSandbox\Extractors\Definition\VariableExtractorDefinition;
 
 
@@ -93,7 +94,7 @@ class ExtractorDefinitionBuilder implements ExtractorDefinitionBuilderInterface
      * @param int $depth
      * @param bool $groups
      *
-     * @return ExtractorDefinitionInterface
+     * @return null|ExtractorDefinitionInterface
      * @throws ExtractorDefinitionBuilderException
      */
     protected function buildExtractor(string $name, string $param, string $alt_definitions, int $depth, bool $groups): ExtractorDefinitionInterface
@@ -105,7 +106,7 @@ class ExtractorDefinitionBuilder implements ExtractorDefinitionBuilderInterface
         }
 
         if ($name) {
-            $definition = new PlainExtractorDefinition($name, $next);
+            $definition = $this->buildPlainExtractor($name, $next);
         } else {
             $definition = $next;
         }
@@ -162,14 +163,19 @@ class ExtractorDefinitionBuilder implements ExtractorDefinitionBuilderInterface
      */
     protected function buildArrayDefinition(?ExtractorDefinitionInterface $definition, int $depth, bool $groups): ExtractorDefinitionInterface
     {
-        if (!$definition && $groups) {
-            throw new ExtractorDefinitionBuilderException('Empty group is not allowed');
+        // special case for blank brackets [] which should be the same as any[]
+        if (!$definition) {
+            if ($groups) {
+                throw new ExtractorDefinitionBuilderException('Empty group is not allowed');
+            }
+
+            $definition = $this->buildPlainExtractor('any');
         }
 
         while ($depth) {
             $depth--;
             // arrayed definition
-            $definition = new PlainExtractorDefinition('[]', $definition);
+            $definition = $this->buildPlainExtractor('[]', $definition);
         }
 
         return $definition;
@@ -192,5 +198,14 @@ class ExtractorDefinitionBuilder implements ExtractorDefinitionBuilderInterface
     private function hasGroups(array $matches): bool
     {
         return isset($matches['group']) && '' !== $matches['group'];
+    }
+
+    private function buildPlainExtractor(string $name, ?ExtractorDefinitionInterface $next = null): PlainExtractorDefinitionInterface
+    {
+        if ('any' === $name && !$next) {
+            return new RecursiveExtractorDefinition($name);
+        }
+
+        return new PlainExtractorDefinition($name, $next);
     }
 }

@@ -34,6 +34,7 @@ use Pinepain\JsSandbox\Extractors\ExtractorsCollection;
 use Pinepain\JsSandbox\Extractors\ExtractorsCollectionInterface;
 use Pinepain\JsSandbox\Extractors\ObjectComponents\ExtractorsObjectStore;
 use Pinepain\JsSandbox\Extractors\ObjectComponents\ExtractorsObjectStoreInterface;
+use Pinepain\JsSandbox\Extractors\PlainExtractors\AnyExtractor;
 use Pinepain\JsSandbox\Extractors\PlainExtractors\ArrayExtractor;
 use Pinepain\JsSandbox\Extractors\PlainExtractors\AssocExtractor;
 use Pinepain\JsSandbox\Extractors\PlainExtractors\BoolExtractor;
@@ -256,7 +257,7 @@ class JsSandboxServiceProvider extends ServiceProvider
 
             // TODO: register basic extractor
 
-            $collection->put('[]', $array = new AssocExtractor());
+            $collection->put('[]', $assoc = new AssocExtractor());
             $collection->put('array', $array = new ArrayExtractor(new AssocExtractor(false)));
 
             $collection->put('raw', $raw = new RawExtractor());
@@ -279,6 +280,7 @@ class JsSandboxServiceProvider extends ServiceProvider
             $collection->put('jsonable', $json = new JsonableExtractor());
 
             $collection->put('scalar', $scalar = new ScalarExtractor($string, $number, $bool, $null, $undefined));
+            $collection->put('any', $any = new AnyExtractor($scalar, $regexp, $datetime, $assoc));
 
             return $collection;
         });
