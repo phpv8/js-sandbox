@@ -17,11 +17,17 @@ namespace Pinepain\JsSandbox\Wrappers\FunctionComponents;
 
 
 use Pinepain\JsSandbox\Specs\FunctionSpecInterface;
-use Pinepain\JsSandbox\Wrappers\FunctionComponents\Runtime\ColdExecutionContextInterface;
-use Pinepain\JsSandbox\Wrappers\Runtime\RuntimeFunctionInterface;
+use Pinepain\JsSandbox\Wrappers\FunctionComponents\Runtime\ExecutionContextInterface;
 
 
-interface FunctionCallHandlerInterface
+interface FunctionDecoratorInterface
 {
-    public function wrap(RuntimeFunctionInterface $function, ColdExecutionContextInterface $cold_execution_context);
+    /**
+     * @param callable $callback
+     * @param FunctionSpecInterface $spec
+     * @param ExecutionContextInterface $exec
+     *
+     * @return callable
+     */
+    public function decorate(callable $callback, FunctionSpecInterface $spec, ExecutionContextInterface $exec): callable;
 }

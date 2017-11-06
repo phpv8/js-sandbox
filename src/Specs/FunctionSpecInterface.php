@@ -16,6 +16,8 @@
 namespace Pinepain\JsSandbox\Specs;
 
 
+use Pinepain\JsSandbox\Decorators\DecoratorSpecInterface;
+use Pinepain\JsSandbox\Decorators\Definitions\DecoratorInterface;
 use Pinepain\JsSandbox\Specs\ReturnSpec\ReturnSpecInterface;
 use Pinepain\JsSandbox\Specs\ThrowSpec\ThrowSpecListInterface;
 
@@ -38,7 +40,7 @@ interface FunctionSpecInterface
     public function getReturn(): ReturnSpecInterface;
 
     /**
-     * @return bool
+     * @return DecoratorSpecInterface[]
      */
-    public function needsExecutionContext(): bool;
+    public function getDecorators(): array;
 }

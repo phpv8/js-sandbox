@@ -85,11 +85,11 @@ class ModulesService
 
     protected function createRuntimeFunction(RequireCallbackInterface $require_object): RuntimeFunctionInterface
     {
-        $require_spec = $this->function->build('!(string id)');
+        $require_spec = $this->function->build('@inject-context (id: string)');
 
         $require_function_object_spec = new AnonymousObjectSpec($this->object->build([
             'main'    => 'get: getMain()',
-            'resolve' => '(string id)',
+            'resolve' => '(id: string)',
         ]));
 
         return new RuntimeFunction('require', [$require_object, 'callback'], $require_spec, $require_object, $require_function_object_spec);

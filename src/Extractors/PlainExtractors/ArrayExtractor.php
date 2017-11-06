@@ -21,73 +21,31 @@ use Pinepain\JsSandbox\Extractors\ExtractorException;
 use Pinepain\JsSandbox\Extractors\ExtractorInterface;
 use V8\ArrayObject;
 use V8\Context;
-use V8\IntegerValue;
-use V8\ObjectValue;
 use V8\Value;
 
 
 class ArrayExtractor implements PlainExtractorInterface
 {
     /**
+     * @var AssocExtractor
+     */
+    private $extractor;
+
+    /**
+     * @inheritDoc
+     */
+    public function __construct(AssocExtractor $extractor)
+    {
+        $this->extractor = $extractor;
+    }
+
+    /**
      * {@inheritdoc}
      */
     public function extract(Context $context, Value $value, PlainExtractorDefinitionInterface $definition, ExtractorInterface $extractor)
     {
         if ($value instanceof ArrayObject) {
-            $length  = $value->length();
-            $isolate = $context->getIsolate();
-
-            $out = [];
-
-            $next = $definition->getNext();
-
-            for ($i = 0; $i < $length; $i++) {
-                $item = $value->get($context, new IntegerValue($isolate, $i));
-
-                if ($next) {
-                    try {
-                        $out[] = $extractor->extract($context, $item, $next);
-                    } catch (ExtractorException $e) {
-                        throw new ExtractorException("Failed to convert array item #{$i}: " . $e->getMessage());
-                    }
-                } else {
-                    $out[] = $item;
-                }
-            }
-
-            return $out;
-        }
-
-        if ($value instanceof ObjectValue) {
-            $own_properties = $value->getOwnPropertyNames($context);
-
-            $length  = $own_properties->length();
-            $isolate = $context->getIsolate();
-
-            $out = [];
-
-            $next = $definition->getNext();
-
-            for ($i = 0; $i < $length; $i++) {
-                /** @var \V8\PrimitiveValue $prop */
-                $prop = $own_properties->get($context, new IntegerValue($isolate, $i));
-                $item = $value->get($context, $prop);
-
-                $prop_name = $prop->value();
-
-                if ($next) {
-                    try {
-                        $out[$prop_name] = $extractor->extract($context, $item, $next);
-                    } catch (ExtractorException $e) {
-                        throw new ExtractorException("Failed to convert array item #{$prop_name}: " . $e->getMessage());
-                    }
-                } else {
-                    $out[$prop_name] = $item;
-                }
-            }
-
-            return $out;
-
+            return $this->extractor->extract($context, $value, $definition, $extractor);
         }
 
         throw new ExtractorException('Value must be of array type, ' . $value->typeOf()->value() . ' given instead');

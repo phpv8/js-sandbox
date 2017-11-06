@@ -18,12 +18,12 @@ namespace Pinepain\JsSandbox\Specs\Builder;
 
 use Pinepain\JsSandbox\Extractors\ExtractorDefinitionBuilderException;
 use Pinepain\JsSandbox\Extractors\ExtractorDefinitionBuilderInterface;
+use Pinepain\JsSandbox\Specs\Builder\Exceptions\ArgumentValueBuilderException;
 use Pinepain\JsSandbox\Specs\Builder\Exceptions\ParameterSpecBuilderException;
 use Pinepain\JsSandbox\Specs\Parameters\MandatoryParameterSpec;
 use Pinepain\JsSandbox\Specs\Parameters\OptionalParameterSpec;
 use Pinepain\JsSandbox\Specs\Parameters\ParameterSpecInterface;
 use Pinepain\JsSandbox\Specs\Parameters\VariadicParameterSpec;
-use function strlen;
 
 
 class ParameterSpecBuilder implements ParameterSpecBuilderInterface
@@ -35,6 +35,9 @@ class ParameterSpecBuilder implements ParameterSpecBuilderInterface
             \s*
         )?
         (?<name>[_a-z]\w*)
+        \s*
+        (?<nullable>\?)?
+        \s*
         (?:
             \s* = \s*
             (?<default>
@@ -56,7 +59,7 @@ class ParameterSpecBuilder implements ParameterSpecBuilderInterface
             \s*
             \:
             \s*
-            (?<type>(\w+\b(?:\(.*\))?)(?:\s*\|\s*(?-1))*)
+            (?<type>([\w\-]*(?:\(.*\))?(?:\[\s*\])?)(?:\s*\|\s*(?-1))*)
             \s*
         )?
         $
@@ -64,11 +67,20 @@ class ParameterSpecBuilder implements ParameterSpecBuilderInterface
     /**
      * @var ExtractorDefinitionBuilderInterface
      */
-    private $builder;
+    private $extractor;
+    /**
+     * @var ArgumentValueBuilderInterface
+     */
+    private $argument;
 
-    public function __construct(ExtractorDefinitionBuilderInterface $builder)
+    /**
+     * @param ExtractorDefinitionBuilderInterface $extractor
+     * @param ArgumentValueBuilderInterface $argument
+     */
+    public function __construct(ExtractorDefinitionBuilderInterface $extractor, ArgumentValueBuilderInterface $argument)
     {
-        $this->builder = $builder;
+        $this->extractor = $extractor;
+        $this->argument  = $argument;
     }
 
     /**
@@ -86,13 +98,20 @@ class ParameterSpecBuilder implements ParameterSpecBuilderInterface
         }
 
         if (preg_match($this->regexp, $definition, $matches)) {
+
+            $matches = $this->prepareDefinition($matches);
+
             try {
-                if ($matches['rest'] ?? false) {
+                if ($this->hasRest($matches)) {
                     return $this->buildVariadicParameterSpec($matches);
                 }
 
-                if ($matches['default'] ?? false) {
-                    return $this->buildOptionalParameterSpec($matches);
+                if ($this->hasDefault($matches)) {
+                    return $this->buildOptionalParameterSpec($matches, $matches['default']);
+                }
+
+                if ($this->hasNullable($matches)) {
+                    return $this->buildOptionalParameterSpec($matches, null);
                 }
 
                 return $this->buildMandatoryParameterSpec($matches);
@@ -106,74 +125,99 @@ class ParameterSpecBuilder implements ParameterSpecBuilderInterface
 
     protected function buildVariadicParameterSpec(array $matches): VariadicParameterSpec
     {
-        if (isset($matches['default']) && '' !== $matches['default']) {
-            throw new ParameterSpecBuilderException('Variadic parameter should have no default value');
-        }
-
-        return new VariadicParameterSpec($matches['name'], $this->builder->build($matches['type']));
+        return new VariadicParameterSpec($matches['name'], $this->extractor->build($matches['type']));
     }
 
-    protected function buildOptionalParameterSpec(array $matches): OptionalParameterSpec
+    protected function buildOptionalParameterSpec(array $matches, ?string $default): OptionalParameterSpec
     {
-        $default = $this->buildDefaultValue($matches['default']);
+        if (null !== $default) {
+            $default_definition = $matches['default'];
+            try {
+                $default = $this->argument->build($default_definition, false);
+            } catch (ArgumentValueBuilderException $e) {
+                throw new ParameterSpecBuilderException("Unknown or unsupported default value format '{$default_definition}'");
+            }
 
-        return new OptionalParameterSpec($matches['name'], $this->builder->build($matches['type']), $default);
+            if (!$this->hasType($matches)) {
+                $matches['type'] = $this->guessTypeFromDefault($default);
+            }
+        }
+
+        if ($this->hasNullable($matches)) {
+            // nullable means that null is a valid value and thus we should explicitly enable null extractor here
+            $matches['type'] = 'null|' . $matches['type'];
+        }
+
+        return new OptionalParameterSpec($matches['name'], $this->extractor->build($matches['type']), $default);
     }
 
     protected function buildMandatoryParameterSpec(array $matches): MandatoryParameterSpec
     {
-        return new MandatoryParameterSpec($matches['name'], $this->builder->build($matches['type']));
+        return new MandatoryParameterSpec($matches['name'], $this->extractor->build($matches['type']));
     }
 
-    protected function buildDefaultValue(string $definition)
+    protected function prepareDefinition(array $matches): array
     {
-        if (is_numeric($definition)) {
-            if (false !== strpos($definition, '.')) {
-                return (float)$definition;
-            }
-
-            return (int)$definition;
+        if ($this->hasNullable($matches) && $this->hasRest($matches)) {
+            throw new ParameterSpecBuilderException("Variadic parameter could not be nullable");
         }
 
-        switch (strtolower($definition)) {
-            case 'null':
-                return null;
-            case 'true':
-                return true;
-            case 'false':
-                return false;
+        if ($this->hasNullable($matches) && $this->hasDefault($matches)) {
+            throw new ParameterSpecBuilderException("Nullable parameter could not have default value");
         }
 
-        // after this point all expected definition values MUST be at least 2 chars length
-
-        if (strlen($definition) < 2) {
-            // UNEXPECTED
-            // Less likely we will ever get here because it should fail at a parsing step, but just in case
-            throw new ParameterSpecBuilderException("Unknown default value format '{$definition}'");
+        if ($this->hasRest($matches) && $this->hasDefault($matches)) {
+            throw new ParameterSpecBuilderException('Variadic parameter could have no default value');
         }
 
-        if ($this->wrappedWith($definition, '[', ']')) {
-            return [];
+        if (!$this->hasDefault($matches) && !$this->hasType($matches)) {
+            // special case when no default value set and no type provided
+            $matches['type'] = 'any';
         }
 
-        if ($this->wrappedWith($definition, '{', '}')) {
-            return [];
-        }
-
-        foreach (['"', "'"] as $quote) {
-            if ($this->wrappedWith($definition, $quote, $quote)) {
-                return trim($definition, $quote);
-            }
-        }
-
-        // Less likely we will ever get here because it should fail at a parsing step, but just in case
-        throw new ParameterSpecBuilderException("Unknown default value format '{$definition}'");
+        return $matches;
     }
 
-    private function wrappedWith(string $definition, string $starts, $ends)
+    private function hasType(array $matches): bool
     {
-        assert(strlen($definition) >= 2);
+        return isset($matches['type']) && '' !== $matches['type'];
+    }
 
-        return $starts == $definition[0] && $ends == $definition[-1];
+    private function hasNullable(array $matches): bool
+    {
+        return isset($matches['nullable']) && '' !== $matches['nullable'];
+    }
+
+    private function hasRest(array $matches): bool
+    {
+        return isset($matches['rest']) && '' !== $matches['rest'];
+    }
+
+    private function hasDefault(array $matches): bool
+    {
+        return isset($matches['default']) && '' !== $matches['default'];
+    }
+
+    private function guessTypeFromDefault($default): string
+    {
+        if (is_array($default)) {
+            return '[]';
+        }
+
+        if (is_numeric($default)) {
+            return 'number';
+        }
+
+        if (is_bool($default)) {
+            return 'bool';
+        }
+
+        if (is_string($default)) {
+            return 'string';
+        }
+
+        // it looks like we have nullable parameter which could be anything
+
+        return 'any';
     }
 }

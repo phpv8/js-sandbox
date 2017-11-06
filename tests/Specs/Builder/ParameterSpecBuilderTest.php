@@ -21,6 +21,8 @@ use PHPUnit_Framework_MockObject_MockObject;
 use Pinepain\JsSandbox\Extractors\Definition\ExtractorDefinitionInterface;
 use Pinepain\JsSandbox\Extractors\ExtractorDefinitionBuilderException;
 use Pinepain\JsSandbox\Extractors\ExtractorDefinitionBuilderInterface;
+use Pinepain\JsSandbox\Specs\Builder\ArgumentValueBuilderInterface;
+use Pinepain\JsSandbox\Specs\Builder\Exceptions\ArgumentValueBuilderException;
 use Pinepain\JsSandbox\Specs\Builder\ParameterSpecBuilder;
 use Pinepain\JsSandbox\Specs\Builder\ParameterSpecBuilderInterface;
 use Pinepain\JsSandbox\Specs\Parameters\MandatoryParameterSpec;
@@ -36,15 +38,21 @@ class ParameterSpecBuilderTest extends TestCase
     protected $builder;
 
     /**
+     * @var ArgumentValueBuilderInterface|PHPUnit_Framework_MockObject_MockObject
+     */
+    protected $argument_builder;
+
+    /**
      * @var ExtractorDefinitionBuilderInterface|PHPUnit_Framework_MockObject_MockObject
      */
     protected $definition_builder;
 
     public function setUp()
     {
+        $this->argument_builder   = $this->getMockForAbstractClass(ArgumentValueBuilderInterface::class);
         $this->definition_builder = $this->getMockForAbstractClass(ExtractorDefinitionBuilderInterface::class);
 
-        $this->builder = new ParameterSpecBuilder($this->definition_builder);
+        $this->builder = new ParameterSpecBuilder($this->definition_builder, $this->argument_builder);
     }
 
     /**
@@ -65,11 +73,35 @@ class ParameterSpecBuilderTest extends TestCase
         $this->builder->build('!invalid!');
     }
 
+    public function testBuildingMandatoryParameterWithoutType()
+    {
+        $this->extractorDefinitionShouldBuildOn('any');
+
+        $spec = $this->builder->build('param');
+
+        $this->assertInstanceOf(MandatoryParameterSpec::class, $spec);
+
+        $this->assertSame('param', $spec->getName());
+        $this->assertInstanceOf(ExtractorDefinitionInterface::class, $spec->getExtractorDefinition());
+    }
+
     public function testBuildingMandatoryParameter()
     {
         $this->extractorDefinitionShouldBuildOn('type');
 
         $spec = $this->builder->build('param: type');
+
+        $this->assertInstanceOf(MandatoryParameterSpec::class, $spec);
+
+        $this->assertSame('param', $spec->getName());
+        $this->assertInstanceOf(ExtractorDefinitionInterface::class, $spec->getExtractorDefinition());
+    }
+
+    public function testBuildingMandatoryParameterWithDashedType()
+    {
+        $this->extractorDefinitionShouldBuildOn('type-dash');
+
+        $spec = $this->builder->build('param: type-dash');
 
         $this->assertInstanceOf(MandatoryParameterSpec::class, $spec);
 
@@ -101,24 +133,30 @@ class ParameterSpecBuilderTest extends TestCase
         $this->assertInstanceOf(ExtractorDefinitionInterface::class, $spec->getExtractorDefinition());
     }
 
-    /**
-     * @param string $raw_default
-     * @param        $expected_default
-     *
-     * @dataProvider provideValidDefaultValues
-     */
-    public function testBuildingOptionalParameter(string $raw_default, $expected_default)
+    public function testBuildingOptionalParameter()
     {
-        $this->extractorDefinitionShouldBuildOn('type');
+        $this->argumentDefinitionShouldBuildOn('"default"');
 
-        $spec = $this->builder->build('param = ' . $raw_default . ': type');
+        $spec = $this->builder->build('param = "default"');
 
         $this->assertInstanceOf(OptionalParameterSpec::class, $spec);
 
         $this->assertSame('param', $spec->getName());
-        $this->assertSame($expected_default, $spec->getDefaultValue());
+        $this->assertSame('"default"', $spec->getDefaultValue());
         $this->assertInstanceOf(ExtractorDefinitionInterface::class, $spec->getExtractorDefinition());
     }
+
+    /**
+     * @expectedException \Pinepain\JsSandbox\Specs\Builder\Exceptions\ParameterSpecBuilderException
+     * @expectedExceptionMessage Unknown or unsupported default value format '"throw"'
+     */
+    public function testBuildingOptionalParameterShouldThrowOnInvalidArgumentValue()
+    {
+        $this->argumentDefinitionShouldThrowOn('"throw"');
+
+        $this->builder->build('param = "throw"');
+    }
+
 
     public function testBuildingVariadicParameter()
     {
@@ -134,11 +172,154 @@ class ParameterSpecBuilderTest extends TestCase
 
     /**
      * @expectedException \Pinepain\JsSandbox\Specs\Builder\Exceptions\ParameterSpecBuilderException
-     * @expectedExceptionMessage Variadic parameter should have no default value
+     * @expectedExceptionMessage Variadic parameter could have no default value
      */
     public function testBuildingVariadicParameterWithDefaultValueShouldThrowException()
     {
         $this->builder->build('...param = []: type');
+    }
+
+    /**
+     * @expectedException \Pinepain\JsSandbox\Specs\Builder\Exceptions\ParameterSpecBuilderException
+     * @expectedExceptionMessage Variadic parameter could not be nullable
+     */
+    public function testBuildingVariadicParameterWithNullableShouldThrowException()
+    {
+        $this->builder->build('...param?: type');
+    }
+
+    /**
+     * @expectedException \Pinepain\JsSandbox\Specs\Builder\Exceptions\ParameterSpecBuilderException
+     * @expectedExceptionMessage Nullable parameter could not have default value
+     */
+    public function testBuildingNullableParameterWithDefaultValueShouldThrowException()
+    {
+        $this->builder->build('param? = "default": type');
+    }
+
+    public function testBuildingNullableParameter()
+    {
+        $this->extractorDefinitionShouldBuildOn('null|type');
+
+        $spec = $this->builder->build('param? : type');
+
+        $this->assertInstanceOf(OptionalParameterSpec::class, $spec);
+
+        $this->assertSame('param', $spec->getName());
+        $this->assertNull($spec->getDefaultValue());
+        $this->assertInstanceOf(ExtractorDefinitionInterface::class, $spec->getExtractorDefinition());
+    }
+
+    public function testBuildingParameterWithArrayTypeGuessing()
+    {
+        $this->argumentDefinitionShouldBuildOn('[]');
+        $this->extractorDefinitionShouldBuildOn('[]');
+
+        $spec = $this->builder->build('param = []');
+
+        $this->assertInstanceOf(OptionalParameterSpec::class, $spec);
+
+        $this->assertSame('param', $spec->getName());
+        $this->assertSame([], $spec->getDefaultValue());
+        $this->assertInstanceOf(ExtractorDefinitionInterface::class, $spec->getExtractorDefinition());
+    }
+
+    public function testBuildingParameterWithBoolTrueTypeGuessing()
+    {
+        $this->argumentDefinitionShouldBuildOn('true');
+        $this->extractorDefinitionShouldBuildOn('bool');
+
+        $spec = $this->builder->build('param = true');
+
+        $this->assertInstanceOf(OptionalParameterSpec::class, $spec);
+
+        $this->assertSame('param', $spec->getName());
+        $this->assertSame(true, $spec->getDefaultValue());
+        $this->assertInstanceOf(ExtractorDefinitionInterface::class, $spec->getExtractorDefinition());
+    }
+
+    public function testBuildingParameterWithBoolFalseTypeGuessing()
+    {
+        $this->argumentDefinitionShouldBuildOn('false');
+        $this->extractorDefinitionShouldBuildOn('bool');
+
+        $spec = $this->builder->build('param = false');
+
+        $this->assertInstanceOf(OptionalParameterSpec::class, $spec);
+
+        $this->assertSame('param', $spec->getName());
+        $this->assertSame(false, $spec->getDefaultValue());
+        $this->assertInstanceOf(ExtractorDefinitionInterface::class, $spec->getExtractorDefinition());
+    }
+
+    public function testBuildingParameterWithNullableTypeGuessing()
+    {
+        $this->argumentDefinitionShouldBuildOn('null');
+        $this->extractorDefinitionShouldBuildOn('null|any');
+
+        $spec = $this->builder->build('param?');
+
+        $this->assertInstanceOf(OptionalParameterSpec::class, $spec);
+
+        $this->assertSame('param', $spec->getName());
+        $this->assertSame(null, $spec->getDefaultValue());
+        $this->assertInstanceOf(ExtractorDefinitionInterface::class, $spec->getExtractorDefinition());
+    }
+
+    public function testBuildingParameterWithDefaultNullTypeGuessing()
+    {
+        $this->argumentDefinitionShouldBuildOn('null');
+        $this->extractorDefinitionShouldBuildOn('any');
+
+        $spec = $this->builder->build('param = null');
+
+        $this->assertInstanceOf(OptionalParameterSpec::class, $spec);
+
+        $this->assertSame('param', $spec->getName());
+        $this->assertSame(null, $spec->getDefaultValue());
+        $this->assertInstanceOf(ExtractorDefinitionInterface::class, $spec->getExtractorDefinition());
+    }
+
+    public function testBuildingParameterWithDefaultIntNumberTypeGuessing()
+    {
+        $this->argumentDefinitionShouldBuildOn('123');
+        $this->extractorDefinitionShouldBuildOn('number');
+
+        $spec = $this->builder->build('param = 123');
+
+        $this->assertInstanceOf(OptionalParameterSpec::class, $spec);
+
+        $this->assertSame('param', $spec->getName());
+        $this->assertEquals(123, $spec->getDefaultValue());
+        $this->assertInstanceOf(ExtractorDefinitionInterface::class, $spec->getExtractorDefinition());
+    }
+
+    public function testBuildingParameterWithDefaultFloatNumberTypeGuessing()
+    {
+        $this->argumentDefinitionShouldBuildOn('123.42');
+        $this->extractorDefinitionShouldBuildOn('number');
+
+        $spec = $this->builder->build('param = 123.42');
+
+        $this->assertInstanceOf(OptionalParameterSpec::class, $spec);
+
+        $this->assertSame('param', $spec->getName());
+        $this->assertSame(123.42, $spec->getDefaultValue());
+        $this->assertInstanceOf(ExtractorDefinitionInterface::class, $spec->getExtractorDefinition());
+    }
+
+    public function testBuildingParameterWithDefaultStringTypeGuessing()
+    {
+        $this->argumentDefinitionShouldBuildOn('"test"');
+        $this->extractorDefinitionShouldBuildOn('string');
+
+        $spec = $this->builder->build('param = "test"');
+
+        $this->assertInstanceOf(OptionalParameterSpec::class, $spec);
+
+        $this->assertSame('param', $spec->getName());
+        $this->assertSame('"test"', $spec->getDefaultValue());
+        $this->assertInstanceOf(ExtractorDefinitionInterface::class, $spec->getExtractorDefinition());
     }
 
     /**
@@ -152,42 +333,40 @@ class ParameterSpecBuilderTest extends TestCase
         $this->builder->build('param :fail');
     }
 
-
-    public function provideValidDefaultValues()
+    protected function argumentDefinitionShouldBuildOn($name)
     {
-        return [
-            ['42', 42],
-            ['-1', -1],
-            ['-1.0', -1.0],
-            ['1.2345', 1.2345],
-            ['[]', []],
-            ['[ ]', []],
-            ['{}', []],
-            ['{ }', []],
-            ['null', null],
-            ['Null', null],
-            ['NulL', null],
-            ['true', true],
-            ['True', true],
-            ['TruE', true],
-            ['false', false],
-            ['False', false],
-            ['FalsE', false],
-            ['"string"', 'string'],
-            ['"StrInG"', 'StrInG'],
-            ["'string'", 'string'],
-            ["'StrInG'", 'StrInG'],
-            ['"str\'ing"', 'str\'ing'],
-            ["'str\"ing'", "str\"ing"],
-            ["' string '", ' string '],
-            ['" string "', ' string '],
-            ["''", ''],
-            ['""', ''],
-            ["'123'", '123'],
-            ['"123"', '123'],
-            ["'-123.456'", '-123.456'],
-            ['"-123.456"', '-123.456'],
-        ];
+        $retval = $name;
+
+        if ('[]' == $name) {
+            $retval = [];
+        }
+
+        if ('true' === $name) {
+            $retval = true;
+        }
+
+        if ('false' === $name) {
+            $retval = false;
+        }
+
+        if (is_numeric($name)) {
+            $retval = is_int($name) ? (int)$name : (float) $name;
+        }
+
+        if ('null' === $name) {
+            $retval = null;
+        }
+
+        $this->argument_builder->method('build')
+                               ->with($name, false)
+                               ->willReturn($retval);
+    }
+
+    protected function argumentDefinitionShouldThrowOn($name)
+    {
+        $this->argument_builder->method('build')
+                               ->with($name, false)
+                               ->willThrowException(new ArgumentValueBuilderException('ArgumentValueBuilderException exception for testing'));
     }
 
     protected function extractorDefinitionShouldBuildOn($name)

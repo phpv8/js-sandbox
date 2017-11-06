@@ -19,6 +19,7 @@ namespace Pinepain\JsSandbox\Extractors;
 use Pinepain\JsSandbox\Extractors\Definition\ExtractorDefinitionInterface;
 use Pinepain\JsSandbox\Extractors\Definition\PlainExtractorDefinition;
 use Pinepain\JsSandbox\Extractors\Definition\PlainExtractorDefinitionInterface;
+use Pinepain\JsSandbox\Extractors\Definition\RecursiveExtractorDefinition;
 use Pinepain\JsSandbox\Extractors\Definition\VariableExtractorDefinition;
 
 
@@ -27,7 +28,39 @@ class ExtractorDefinitionBuilder implements ExtractorDefinitionBuilderInterface
     /**
      * @var string
      */
-    protected $type_regexp = '/^((?<name>[-_\w]+)(?:\s*\(\s*(?<param>(?-3)*|[\w\\\\]+)\s*\))?(?:\s*\|\s*(?<alt>(?-4)))?)$/';
+    protected $type_regexp = '/
+    ^
+    (
+        (?<name>
+            [-_\w]*
+        )
+        (?:
+            \s*
+            (?<group>
+                \(
+                \s*
+                (?<param>
+                    (?-4)*
+                    |
+                    [\w\\\\]+
+                )
+                \s*
+                \)
+            )
+        )?
+        (?:
+            \s*
+            (?<arr>(?:\s*\[\s*\]\s*)+)
+        )?
+        (?:
+            \s*
+            \|
+            \s*
+            (?<alt>(?-6))
+        )?
+    )
+    $
+    /xi';
 
     /**
      * {@inheritdoc}
@@ -40,32 +73,53 @@ class ExtractorDefinitionBuilder implements ExtractorDefinitionBuilderInterface
             throw new ExtractorDefinitionBuilderException('Definition must be non-empty string');
         }
 
-        if (preg_match($this->type_regexp, $definition, $matches)) {
-            return $this->buildExtractor($matches['name'], $matches['param'] ?? null, $matches['alt'] ?? null);
+        try {
+            if (preg_match($this->type_regexp, $definition, $matches)) {
+                $extractor = $this->buildExtractor($matches['name'], $matches['param'] ?? '', $matches['alt'] ?? '', $this->getDepth($matches), $this->hasGroups($matches));
+
+                return $extractor;
+            }
+        } catch (ExtractorDefinitionBuilderException $e) {
+            // We don't care about what specific issue we hit inside,
+            // for API user it means that the definition is invalid
         }
 
         throw new ExtractorDefinitionBuilderException("Unable to parse definition: '{$definition}'");
     }
 
     /**
-     * @param string      $name
+     * @param string $name
      * @param null|string $param
      * @param null|string $alt_definitions
+     * @param int $depth
+     * @param bool $groups
      *
-     * @return ExtractorDefinitionInterface
+     * @return null|ExtractorDefinitionInterface
      * @throws ExtractorDefinitionBuilderException
      */
-    protected function buildExtractor(string $name, ?string $param, ?string $alt_definitions): ExtractorDefinitionInterface
+    protected function buildExtractor(string $name, string $param, string $alt_definitions, int $depth, bool $groups): ExtractorDefinitionInterface
     {
         $next = null;
 
-        if ($param && preg_match($this->type_regexp, $param, $matches)) {
-            $next = $this->buildExtractor($matches['name'], $matches['param'] ?? null, $matches['alt'] ?? null);
+        if ('' !== $param && preg_match($this->type_regexp, $param, $matches)) {
+            $next = $this->buildExtractor($matches['name'], $matches['param'] ?? '', $matches['alt'] ?? '', $this->getDepth($matches), $this->hasGroups($matches));
         }
 
-        $definition = new PlainExtractorDefinition($name, $next);
+        if ($name) {
+            $definition = $this->buildPlainExtractor($name, $next);
+        } else {
+            $definition = $next;
+        }
 
-        if ($alt_definitions) {
+        if ($depth > 0) {
+            $definition = $this->buildArrayDefinition($definition, $depth, $groups);
+        }
+
+        if (!$definition) {
+            throw new ExtractorDefinitionBuilderException('Empty group is not allowed');
+        }
+
+        if ('' !== $alt_definitions) {
             $definition = $this->buildVariableDefinition($definition, $alt_definitions);
         }
 
@@ -74,7 +128,7 @@ class ExtractorDefinitionBuilder implements ExtractorDefinitionBuilderInterface
 
     /**
      * @param PlainExtractorDefinitionInterface $definition
-     * @param string                            $alt_definitions
+     * @param string $alt_definitions
      *
      * @return VariableExtractorDefinition
      * @throws ExtractorDefinitionBuilderException
@@ -83,14 +137,15 @@ class ExtractorDefinitionBuilder implements ExtractorDefinitionBuilderInterface
     {
         $alt = [$definition];
 
-        while ($alt_definitions && preg_match($this->type_regexp, $alt_definitions, $matches)) {
+        while ('' !== $alt_definitions && preg_match($this->type_regexp, $alt_definitions, $matches)) {
             // build alt
-            $alt[] = $this->buildExtractor($matches['name'], $matches['param'] ?? null, null);
+            $alt[] = $this->buildExtractor($matches['name'], $matches['param'] ?? '', '', $this->getDepth($matches), $this->hasGroups($matches));
 
-            $alt_definitions = $matches['alt'] ?? null;
+            $alt_definitions = trim($matches['alt'] ?? '');
         }
 
-        if ($alt_definitions) {
+        if ('' !== $alt_definitions) {
+            // UNEXPECTED
             // this should not be possible, but just in case we will ever get here
             throw new ExtractorDefinitionBuilderException('Invalid varying definition');
         }
@@ -98,4 +153,54 @@ class ExtractorDefinitionBuilder implements ExtractorDefinitionBuilderInterface
         return new VariableExtractorDefinition(...$alt);
     }
 
+    /**
+     * @param null|ExtractorDefinitionInterface $definition
+     * @param int $depth
+     * @param bool $groups
+     *
+     * @return ExtractorDefinitionInterface
+     * @throws ExtractorDefinitionBuilderException
+     */
+    protected function buildArrayDefinition(?ExtractorDefinitionInterface $definition, int $depth, bool $groups): ExtractorDefinitionInterface
+    {
+        // special case for blank brackets [] which should be the same as any[]
+        if (!$definition) {
+            if ($groups) {
+                throw new ExtractorDefinitionBuilderException('Empty group is not allowed');
+            }
+
+            $definition = $this->buildPlainExtractor('any');
+        }
+
+        while ($depth) {
+            $depth--;
+            // arrayed definition
+            $definition = $this->buildPlainExtractor('[]', $definition);
+        }
+
+        return $definition;
+    }
+
+    private function getDepth(array $matches): int
+    {
+        if (!isset($matches['arr']) || '' === $matches['arr']) {
+            return 0;
+        }
+
+        return substr_count($matches['arr'], '[');
+    }
+
+    private function hasGroups(array $matches): bool
+    {
+        return isset($matches['group']) && '' !== $matches['group'];
+    }
+
+    private function buildPlainExtractor(string $name, ?ExtractorDefinitionInterface $next = null): PlainExtractorDefinitionInterface
+    {
+        if ('any' === $name && !$next) {
+            return new RecursiveExtractorDefinition($name);
+        }
+
+        return new PlainExtractorDefinition($name, $next);
+    }
 }

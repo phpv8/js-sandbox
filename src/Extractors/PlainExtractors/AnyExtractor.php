@@ -20,31 +20,34 @@ use Pinepain\JsSandbox\Extractors\Definition\PlainExtractorDefinitionInterface;
 use Pinepain\JsSandbox\Extractors\ExtractorException;
 use Pinepain\JsSandbox\Extractors\ExtractorInterface;
 use V8\Context;
-use V8\ObjectValue;
 use V8\Value;
 
 
-class ObjectExtractor implements PlainExtractorInterface
+class AnyExtractor implements PlainExtractorInterface
 {
+    /**
+     * @var PlainExtractorInterface[]
+     */
+    private $extractors;
+
+    public function __construct(PlainExtractorInterface ...$extractors)
+    {
+        $this->extractors = $extractors;
+    }
+
     /**
      * {@inheritdoc}
      */
     public function extract(Context $context, Value $value, PlainExtractorDefinitionInterface $definition, ExtractorInterface $extractor)
     {
-        if ($value instanceof ObjectValue) {
-
-            if ($definition->getNext()) {
-                // we have value constraint
-                try {
-                    $extractor->extract($context, $value, $definition->getNext());
-                } catch (ExtractorException $e) {
-                    throw new ExtractorException('Object value constraint failed: ' . $e->getMessage());
-                }
+        foreach ($this->extractors as $plain_extractor) {
+            try {
+                return $plain_extractor->extract($context, $value, $definition, $extractor);
+            } catch (ExtractorException $e) {
+                //
             }
-
-            return $value;
         }
 
-        throw new ExtractorException('Value must be of the type object, ' . $value->typeOf()->value() . ' given');
+        throw new ExtractorException('Unable to pick proper extractor for ' . $value->typeOf()->value() . 'type');
     }
 }

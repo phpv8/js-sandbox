@@ -16,6 +16,7 @@
 namespace Pinepain\JsSandbox\Specs;
 
 
+use Pinepain\JsSandbox\Decorators\DecoratorSpecInterface;
 use Pinepain\JsSandbox\Specs\ReturnSpec\ReturnSpecInterface;
 use Pinepain\JsSandbox\Specs\ThrowSpec\ThrowSpecListInterface;
 
@@ -36,22 +37,22 @@ class FunctionSpec implements FunctionSpecInterface
      */
     private $return;
     /**
-     * @var bool
+     * @var array|DecoratorSpecInterface[]
      */
-    private $needs_execution_context;
+    private $decorators;
 
     /**
      * @param ParametersListInterface $parameters
-     * @param ThrowSpecListInterface  $exceptions
-     * @param ReturnSpecInterface     $return
-     * @param bool                    $needs_execution_context
+     * @param ThrowSpecListInterface $exceptions
+     * @param ReturnSpecInterface $return
+     * @param DecoratorSpecInterface[] $decorators
      */
-    public function __construct(ParametersListInterface $parameters, ThrowSpecListInterface $exceptions, ReturnSpecInterface $return, bool $needs_execution_context = false)
+    public function __construct(ParametersListInterface $parameters, ThrowSpecListInterface $exceptions, ReturnSpecInterface $return, array $decorators = [])
     {
-        $this->parameters              = $parameters;
-        $this->exceptions              = $exceptions;
-        $this->return                  = $return;
-        $this->needs_execution_context = $needs_execution_context;
+        $this->parameters = $parameters;
+        $this->exceptions = $exceptions;
+        $this->return     = $return;
+        $this->decorators = $decorators;
     }
 
     /**
@@ -78,8 +79,12 @@ class FunctionSpec implements FunctionSpecInterface
         return $this->return;
     }
 
-    public function needsExecutionContext(): bool
+    /**
+     * {@inheritdoc}
+     */
+    public function getDecorators(): array
     {
-        return $this->needs_execution_context;
+        return $this->decorators;
     }
+
 }
