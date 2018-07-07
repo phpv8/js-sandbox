@@ -25,6 +25,6 @@ composer require pinepain/js-sandbox
 
 ## License
 
-Copyright (c) 2016-2017 Bogdan Padalko &lt;pinepain@gmail.com&gt;
+Copyright (c) 2016-2017 Bogdan Padalko &lt;thepinepain@gmail.com&gt;
 
 [js-sandbox](https://github.com/pinepain/js-sandbox) PHP library is licensed under the [MIT license](http://opensource.org/licenses/MIT).
