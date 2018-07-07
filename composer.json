@@ -15,9 +15,7 @@
     "require": {
         "php": "~7.1",
         "league/flysystem": "^1.0",
-        "pinepain/php-v8-stubs": "^0.2.1",
-        "pinepain/php-ref-stubs": "^0.5.0",
-        "pinepain/php-object-maps": "^0.3.0"
+        "phpv8/php-v8-stubs": "^0.2.1"
     },
     "require-dev": {
         "illuminate/support": "5.5.*",
@@ -27,12 +25,12 @@
     },
     "autoload": {
         "psr-4": {
-            "Pinepain\\JsSandbox\\": "src/"
+            "PhpV8\\JsSandbox\\": "src/"
         }
     },
     "autoload-dev": {
         "psr-4": {
-            "Pinepain\\JsSandbox\\Tests\\": "tests/"
+            "PhpV8\\JsSandbox\\Tests\\": "tests/"
         }
     }
 }
