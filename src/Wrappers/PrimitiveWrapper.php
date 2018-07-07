@@ -13,7 +13,7 @@
  */
 
 
-namespace Pinepain\JsSandbox\Wrappers;
+namespace PhpV8\JsSandbox\Wrappers;
 
 
 use V8\BooleanValue;

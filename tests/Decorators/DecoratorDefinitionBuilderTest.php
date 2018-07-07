@@ -13,16 +13,16 @@
  */
 
 
-namespace Pinepain\JsSandbox\Tests\Decorators;
+namespace PhpV8\JsSandbox\Tests\Decorators;
 
 
 use PHPUnit\Framework\TestCase;
 use PHPUnit_Framework_MockObject_MockObject;
-use Pinepain\JsSandbox\Decorators\DecoratorSpecBuilder;
-use Pinepain\JsSandbox\Decorators\DecoratorSpecBuilderInterface;
-use Pinepain\JsSandbox\Decorators\DecoratorSpecInterface;
-use Pinepain\JsSandbox\Specs\Builder\ArgumentValueBuilderInterface;
-use Pinepain\JsSandbox\Specs\Builder\Exceptions\ArgumentValueBuilderException;
+use PhpV8\JsSandbox\Decorators\DecoratorSpecBuilder;
+use PhpV8\JsSandbox\Decorators\DecoratorSpecBuilderInterface;
+use PhpV8\JsSandbox\Decorators\DecoratorSpecInterface;
+use PhpV8\JsSandbox\Specs\Builder\ArgumentValueBuilderInterface;
+use PhpV8\JsSandbox\Specs\Builder\Exceptions\ArgumentValueBuilderException;
 
 
 class DecoratorDefinitionBuilderTest extends TestCase

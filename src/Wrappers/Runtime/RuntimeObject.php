@@ -13,11 +13,11 @@
  */
 
 
-namespace Pinepain\JsSandbox\Wrappers\Runtime;
+namespace PhpV8\JsSandbox\Wrappers\Runtime;
 
 
-use Pinepain\JsSandbox\Specs\ObjectSpecInterface;
-use Pinepain\JsSandbox\Wrappers\WrapperInterface;
+use PhpV8\JsSandbox\Specs\ObjectSpecInterface;
+use PhpV8\JsSandbox\Wrappers\WrapperInterface;
 use Ref\WeakReference;
 use V8\FunctionObject;
 use V8\ObjectValue;

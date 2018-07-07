@@ -13,11 +13,11 @@
  */
 
 
-namespace Pinepain\JsSandbox\Specs\Builder;
+namespace PhpV8\JsSandbox\Specs\Builder;
 
 
-use Pinepain\JsSandbox\Specs\Builder\Exceptions\ParameterSpecBuilderException;
-use Pinepain\JsSandbox\Specs\Parameters\ParameterSpecInterface;
+use PhpV8\JsSandbox\Specs\Builder\Exceptions\ParameterSpecBuilderException;
+use PhpV8\JsSandbox\Specs\Parameters\ParameterSpecInterface;
 
 
 interface ParameterSpecBuilderInterface

@@ -12,16 +12,16 @@
  */
 
 
-namespace Pinepain\JsSandbox\Extractors\PlainExtractors;
+namespace PhpV8\JsSandbox\Extractors\PlainExtractors;
 
 
 use DateTime;
 use PHPUnit\Framework\TestCase;
 use PHPUnit_Framework_MockObject_MockObject;
-use Pinepain\JsSandbox\Extractors\Definition\ExtractorDefinitionInterface;
-use Pinepain\JsSandbox\Extractors\Definition\PlainExtractorDefinitionInterface;
-use Pinepain\JsSandbox\Extractors\ExtractorInterface;
-use Pinepain\JsSandbox\Extractors\ObjectComponents\ExtractorsObjectStoreInterface;
+use PhpV8\JsSandbox\Extractors\Definition\ExtractorDefinitionInterface;
+use PhpV8\JsSandbox\Extractors\Definition\PlainExtractorDefinitionInterface;
+use PhpV8\JsSandbox\Extractors\ExtractorInterface;
+use PhpV8\JsSandbox\Extractors\ObjectComponents\ExtractorsObjectStoreInterface;
 use UnexpectedValueException;
 use V8\Context;
 use V8\Isolate;

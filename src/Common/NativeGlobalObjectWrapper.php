@@ -13,10 +13,10 @@
  */
 
 
-namespace Pinepain\JsSandbox\Common;
+namespace PhpV8\JsSandbox\Common;
 
 
-use Pinepain\JsSandbox\NativeWrappers\NativeObjectWrapper;
+use PhpV8\JsSandbox\NativeWrappers\NativeObjectWrapper;
 
 
 class NativeGlobalObjectWrapper extends NativeObjectWrapper implements NativeGlobalObjectWrapperInterface

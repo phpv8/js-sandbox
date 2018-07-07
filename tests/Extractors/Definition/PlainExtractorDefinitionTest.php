@@ -13,12 +13,12 @@
  */
 
 
-namespace Pinepain\JsSandbox\Tests\Extractors\Definition;
+namespace PhpV8\JsSandbox\Tests\Extractors\Definition;
 
 
 use PHPUnit\Framework\TestCase;
-use Pinepain\JsSandbox\Extractors\Definition\ExtractorDefinitionInterface;
-use Pinepain\JsSandbox\Extractors\Definition\PlainExtractorDefinition;
+use PhpV8\JsSandbox\Extractors\Definition\ExtractorDefinitionInterface;
+use PhpV8\JsSandbox\Extractors\Definition\PlainExtractorDefinition;
 
 
 class PlainExtractorDefinitionTest extends TestCase

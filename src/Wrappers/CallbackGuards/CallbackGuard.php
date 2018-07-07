@@ -13,11 +13,11 @@
  */
 
 
-namespace Pinepain\JsSandbox\Wrappers\CallbackGuards;
+namespace PhpV8\JsSandbox\Wrappers\CallbackGuards;
 
 
-use Pinepain\JsSandbox\Exceptions\EscapableException;
-use Pinepain\JsSandbox\Exceptions\NativeException;
+use PhpV8\JsSandbox\Exceptions\EscapableException;
+use PhpV8\JsSandbox\Exceptions\NativeException;
 use Throwable;
 use V8\CallbackInfoInterface;
 use V8\ExceptionManager;

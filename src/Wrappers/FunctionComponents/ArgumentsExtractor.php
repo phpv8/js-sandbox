@@ -13,15 +13,15 @@
  */
 
 
-namespace Pinepain\JsSandbox\Wrappers\FunctionComponents;
+namespace PhpV8\JsSandbox\Wrappers\FunctionComponents;
 
 
-use Pinepain\JsSandbox\Exceptions\NativeException;
-use Pinepain\JsSandbox\Extractors\Definition\ExtractorDefinitionInterface;
-use Pinepain\JsSandbox\Extractors\ExtractorException;
-use Pinepain\JsSandbox\Extractors\ExtractorInterface;
-use Pinepain\JsSandbox\Specs\FunctionSpecInterface;
-use Pinepain\JsSandbox\Specs\Parameters\ParameterSpecInterface;
+use PhpV8\JsSandbox\Exceptions\NativeException;
+use PhpV8\JsSandbox\Extractors\Definition\ExtractorDefinitionInterface;
+use PhpV8\JsSandbox\Extractors\ExtractorException;
+use PhpV8\JsSandbox\Extractors\ExtractorInterface;
+use PhpV8\JsSandbox\Specs\FunctionSpecInterface;
+use PhpV8\JsSandbox\Specs\Parameters\ParameterSpecInterface;
 use V8\Context;
 use V8\FunctionCallbackInfo;
 use V8\Value;

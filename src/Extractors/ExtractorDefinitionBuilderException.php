@@ -13,10 +13,10 @@
  */
 
 
-namespace Pinepain\JsSandbox\Extractors;
+namespace PhpV8\JsSandbox\Extractors;
 
 
-use Pinepain\JsSandbox\Exceptions\Exception;
+use PhpV8\JsSandbox\Exceptions\Exception;
 
 
 class ExtractorDefinitionBuilderException extends Exception

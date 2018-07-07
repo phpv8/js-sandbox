@@ -13,10 +13,10 @@
  */
 
 
-namespace Pinepain\JsSandbox\Specs\Parameters;
+namespace PhpV8\JsSandbox\Specs\Parameters;
 
 
-use Pinepain\JsSandbox\Extractors\Definition\ExtractorDefinitionInterface;
+use PhpV8\JsSandbox\Extractors\Definition\ExtractorDefinitionInterface;
 
 
 // don't do full args validation, just necessary minimum for converting from JS to PHP

@@ -13,15 +13,15 @@
  */
 
 
-namespace Pinepain\JsSandbox\Wrappers;
+namespace PhpV8\JsSandbox\Wrappers;
 
 
-use Pinepain\JsSandbox\Wrappers\CallbackGuards\CallbackGuardInterface;
-use Pinepain\JsSandbox\Wrappers\FunctionComponents\FunctionCallHandlerInterface;
-use Pinepain\JsSandbox\Wrappers\FunctionComponents\FunctionWrappersCacheInterface;
-use Pinepain\JsSandbox\Wrappers\FunctionComponents\Runtime\ColdExecutionContext;
-use Pinepain\JsSandbox\Wrappers\ObjectComponents\WrappedObject;
-use Pinepain\JsSandbox\Wrappers\Runtime\RuntimeFunction;
+use PhpV8\JsSandbox\Wrappers\CallbackGuards\CallbackGuardInterface;
+use PhpV8\JsSandbox\Wrappers\FunctionComponents\FunctionCallHandlerInterface;
+use PhpV8\JsSandbox\Wrappers\FunctionComponents\FunctionWrappersCacheInterface;
+use PhpV8\JsSandbox\Wrappers\FunctionComponents\Runtime\ColdExecutionContext;
+use PhpV8\JsSandbox\Wrappers\ObjectComponents\WrappedObject;
+use PhpV8\JsSandbox\Wrappers\Runtime\RuntimeFunction;
 use V8\Context;
 use V8\FunctionObject;
 use V8\Isolate;

@@ -13,10 +13,10 @@
  */
 
 
-namespace Pinepain\JsSandbox\Specs\Builder;
+namespace PhpV8\JsSandbox\Specs\Builder;
 
 
-use Pinepain\JsSandbox\Extractors\Definition\ExtractorDefinitionInterface;
+use PhpV8\JsSandbox\Extractors\Definition\ExtractorDefinitionInterface;
 
 
 class PropertySpecPrototype

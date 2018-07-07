@@ -13,11 +13,11 @@
  */
 
 
-namespace Pinepain\JsSandbox\Specs\Builder;
+namespace PhpV8\JsSandbox\Specs\Builder;
 
 
-use Pinepain\JsSandbox\Specs\Builder\Exceptions\PropertySpecBuilderException;
-use Pinepain\JsSandbox\Specs\PropertySpecInterface;
+use PhpV8\JsSandbox\Specs\Builder\Exceptions\PropertySpecBuilderException;
+use PhpV8\JsSandbox\Specs\PropertySpecInterface;
 
 
 interface PropertySpecBuilderInterface

@@ -13,7 +13,7 @@
  */
 
 
-namespace Pinepain\JsSandbox\Specs\ReturnSpec;
+namespace PhpV8\JsSandbox\Specs\ReturnSpec;
 
 
 interface ReturnSpecInterface

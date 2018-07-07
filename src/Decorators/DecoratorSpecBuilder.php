@@ -13,11 +13,11 @@
  */
 
 
-namespace Pinepain\JsSandbox\Decorators;
+namespace PhpV8\JsSandbox\Decorators;
 
 
-use Pinepain\JsSandbox\Specs\Builder\ArgumentValueBuilderInterface;
-use Pinepain\JsSandbox\Specs\Builder\Exceptions\ArgumentValueBuilderException;
+use PhpV8\JsSandbox\Specs\Builder\ArgumentValueBuilderInterface;
+use PhpV8\JsSandbox\Specs\Builder\Exceptions\ArgumentValueBuilderException;
 
 
 class DecoratorSpecBuilder implements DecoratorSpecBuilderInterface

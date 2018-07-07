@@ -13,17 +13,17 @@
  */
 
 
-namespace Pinepain\JsSandbox\Wrappers\ObjectComponents;
+namespace PhpV8\JsSandbox\Wrappers\ObjectComponents;
 
 
-use Pinepain\JsSandbox\Exceptions\NativeException;
-use Pinepain\JsSandbox\Extractors\ExtractorException;
-use Pinepain\JsSandbox\Extractors\ExtractorInterface;
-use Pinepain\JsSandbox\Specs\BindingSpecInterface;
-use Pinepain\JsSandbox\Specs\FunctionSpecInterface;
-use Pinepain\JsSandbox\Wrappers\CallbackGuards\CallbackGuardInterface;
-use Pinepain\JsSandbox\Wrappers\Runtime\RuntimeFunction;
-use Pinepain\JsSandbox\Wrappers\Runtime\RuntimeObject;
+use PhpV8\JsSandbox\Exceptions\NativeException;
+use PhpV8\JsSandbox\Extractors\ExtractorException;
+use PhpV8\JsSandbox\Extractors\ExtractorInterface;
+use PhpV8\JsSandbox\Specs\BindingSpecInterface;
+use PhpV8\JsSandbox\Specs\FunctionSpecInterface;
+use PhpV8\JsSandbox\Wrappers\CallbackGuards\CallbackGuardInterface;
+use PhpV8\JsSandbox\Wrappers\Runtime\RuntimeFunction;
+use PhpV8\JsSandbox\Wrappers\Runtime\RuntimeObject;
 use V8\FunctionObject;
 use V8\NamedPropertyHandlerConfiguration;
 use V8\NameValue;

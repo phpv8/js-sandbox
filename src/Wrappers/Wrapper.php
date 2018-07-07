@@ -13,10 +13,10 @@
  */
 
 
-namespace Pinepain\JsSandbox\Wrappers;
+namespace PhpV8\JsSandbox\Wrappers;
 
 
-use Pinepain\JsSandbox\Wrappers\Runtime\RuntimeFunction;
+use PhpV8\JsSandbox\Wrappers\Runtime\RuntimeFunction;
 use V8\Context;
 use V8\Isolate;
 use V8\Value;

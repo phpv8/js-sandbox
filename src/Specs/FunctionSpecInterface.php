@@ -13,13 +13,13 @@
  */
 
 
-namespace Pinepain\JsSandbox\Specs;
+namespace PhpV8\JsSandbox\Specs;
 
 
-use Pinepain\JsSandbox\Decorators\DecoratorSpecInterface;
-use Pinepain\JsSandbox\Decorators\Definitions\DecoratorInterface;
-use Pinepain\JsSandbox\Specs\ReturnSpec\ReturnSpecInterface;
-use Pinepain\JsSandbox\Specs\ThrowSpec\ThrowSpecListInterface;
+use PhpV8\JsSandbox\Decorators\DecoratorSpecInterface;
+use PhpV8\JsSandbox\Decorators\Definitions\DecoratorInterface;
+use PhpV8\JsSandbox\Specs\ReturnSpec\ReturnSpecInterface;
+use PhpV8\JsSandbox\Specs\ThrowSpec\ThrowSpecListInterface;
 
 
 interface FunctionSpecInterface

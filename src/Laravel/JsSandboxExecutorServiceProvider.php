@@ -13,14 +13,14 @@
  */
 
 
-namespace Pinepain\JsSandbox\Laravel;
+namespace PhpV8\JsSandbox\Laravel;
 
 
 use Illuminate\Contracts\Container\Container;
 use Illuminate\Support\ServiceProvider;
-use Pinepain\JsSandbox\Executor;
-use Pinepain\JsSandbox\Executors\ModulesNativeExecutor;
-use Pinepain\JsSandbox\Executors\StringExecutor;
+use PhpV8\JsSandbox\Executor;
+use PhpV8\JsSandbox\Executors\ModulesNativeExecutor;
+use PhpV8\JsSandbox\Executors\StringExecutor;
 use V8\Context;
 
 

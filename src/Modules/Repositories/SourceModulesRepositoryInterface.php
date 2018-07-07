@@ -13,10 +13,10 @@
  */
 
 
-namespace Pinepain\JsSandbox\Modules\Repositories;
+namespace PhpV8\JsSandbox\Modules\Repositories;
 
 
-use Pinepain\JsSandbox\Modules\SourceModuleBuilderInterface;
+use PhpV8\JsSandbox\Modules\SourceModuleBuilderInterface;
 
 
 interface SourceModulesRepositoryInterface

@@ -13,10 +13,10 @@
  */
 
 
-namespace Pinepain\JsSandbox\Extractors;
+namespace PhpV8\JsSandbox\Extractors;
 
 
-use Pinepain\JsSandbox\Exceptions\NativeException;
+use PhpV8\JsSandbox\Exceptions\NativeException;
 
 
 class ExtractorException extends NativeException

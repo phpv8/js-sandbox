@@ -13,7 +13,7 @@
  */
 
 
-namespace Pinepain\JsSandbox\NativeWrappers;
+namespace PhpV8\JsSandbox\NativeWrappers;
 
 
 use V8\ObjectValue;

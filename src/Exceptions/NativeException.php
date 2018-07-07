@@ -13,7 +13,7 @@
  */
 
 
-namespace Pinepain\JsSandbox\Exceptions;
+namespace PhpV8\JsSandbox\Exceptions;
 
 
 class NativeException extends Exception

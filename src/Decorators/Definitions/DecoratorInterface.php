@@ -13,10 +13,10 @@
  */
 
 
-namespace Pinepain\JsSandbox\Decorators\Definitions;
+namespace PhpV8\JsSandbox\Decorators\Definitions;
 
 
-use Pinepain\JsSandbox\Wrappers\FunctionComponents\Runtime\ExecutionContextInterface;
+use PhpV8\JsSandbox\Wrappers\FunctionComponents\Runtime\ExecutionContextInterface;
 
 
 interface DecoratorInterface

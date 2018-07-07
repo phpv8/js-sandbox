@@ -13,11 +13,11 @@
  */
 
 
-namespace Pinepain\JsSandbox\Wrappers\Runtime;
+namespace PhpV8\JsSandbox\Wrappers\Runtime;
 
 
-use Pinepain\JsSandbox\Specs\FunctionSpecInterface;
-use Pinepain\JsSandbox\Specs\ObjectSpecInterface;
+use PhpV8\JsSandbox\Specs\FunctionSpecInterface;
+use PhpV8\JsSandbox\Specs\ObjectSpecInterface;
 
 
 class RuntimeFunction implements RuntimeFunctionInterface

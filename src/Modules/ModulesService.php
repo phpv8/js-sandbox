@@ -13,17 +13,17 @@
  */
 
 
-namespace Pinepain\JsSandbox\Modules;
+namespace PhpV8\JsSandbox\Modules;
 
 
-use Pinepain\JsSandbox\Specs\AnonymousObjectSpec;
-use Pinepain\JsSandbox\Specs\Builder\FunctionSpecBuilder;
-use Pinepain\JsSandbox\Specs\Builder\ObjectSpecBuilderInterface;
-use Pinepain\JsSandbox\Specs\ObjectSpec;
-use Pinepain\JsSandbox\Specs\ObjectSpecsCollectionInterface;
-use Pinepain\JsSandbox\Wrappers\Runtime\RuntimeFunction;
-use Pinepain\JsSandbox\Wrappers\Runtime\RuntimeFunctionInterface;
-use Pinepain\JsSandbox\Wrappers\WrapperInterface;
+use PhpV8\JsSandbox\Specs\AnonymousObjectSpec;
+use PhpV8\JsSandbox\Specs\Builder\FunctionSpecBuilder;
+use PhpV8\JsSandbox\Specs\Builder\ObjectSpecBuilderInterface;
+use PhpV8\JsSandbox\Specs\ObjectSpec;
+use PhpV8\JsSandbox\Specs\ObjectSpecsCollectionInterface;
+use PhpV8\JsSandbox\Wrappers\Runtime\RuntimeFunction;
+use PhpV8\JsSandbox\Wrappers\Runtime\RuntimeFunctionInterface;
+use PhpV8\JsSandbox\Wrappers\WrapperInterface;
 use V8\Context;
 use V8\FunctionObject;
 

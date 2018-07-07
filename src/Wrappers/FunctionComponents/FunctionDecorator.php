@@ -13,12 +13,12 @@
  */
 
 
-namespace Pinepain\JsSandbox\Wrappers\FunctionComponents;
+namespace PhpV8\JsSandbox\Wrappers\FunctionComponents;
 
 
-use Pinepain\JsSandbox\Decorators\DecoratorsCollectionInterface;
-use Pinepain\JsSandbox\Specs\FunctionSpecInterface;
-use Pinepain\JsSandbox\Wrappers\FunctionComponents\Runtime\ExecutionContextInterface;
+use PhpV8\JsSandbox\Decorators\DecoratorsCollectionInterface;
+use PhpV8\JsSandbox\Specs\FunctionSpecInterface;
+use PhpV8\JsSandbox\Wrappers\FunctionComponents\Runtime\ExecutionContextInterface;
 
 
 class FunctionDecorator implements FunctionDecoratorInterface

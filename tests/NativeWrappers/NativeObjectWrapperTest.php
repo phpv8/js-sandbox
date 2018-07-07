@@ -13,13 +13,13 @@
  */
 
 
-namespace Pinepain\JsSandbox\Tests\NativeWrappers;
+namespace PhpV8\JsSandbox\Tests\NativeWrappers;
 
 
 use PHPUnit\Framework\TestCase;
 use PHPUnit_Framework_MockObject_MockObject;
-use Pinepain\JsSandbox\NativeWrappers\NativeObjectWrapper;
-use Pinepain\JsSandbox\Wrappers\WrapperInterface;
+use PhpV8\JsSandbox\NativeWrappers\NativeObjectWrapper;
+use PhpV8\JsSandbox\Wrappers\WrapperInterface;
 use V8\Context;
 use V8\Isolate;
 use V8\ObjectValue;

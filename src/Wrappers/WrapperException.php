@@ -13,10 +13,10 @@
  */
 
 
-namespace Pinepain\JsSandbox\Wrappers;
+namespace PhpV8\JsSandbox\Wrappers;
 
 
-use Pinepain\JsSandbox\Exceptions\Exception;
+use PhpV8\JsSandbox\Exceptions\Exception;
 
 
 class WrapperException extends Exception

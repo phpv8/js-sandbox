@@ -13,14 +13,14 @@
  */
 
 
-namespace Pinepain\JsSandbox\Specs\Builder;
+namespace PhpV8\JsSandbox\Specs\Builder;
 
 
-use Pinepain\JsSandbox\Extractors\ExtractorDefinitionBuilderException;
-use Pinepain\JsSandbox\Extractors\ExtractorDefinitionBuilderInterface;
-use Pinepain\JsSandbox\Specs\Builder\Exceptions\PropertySpecBuilderException;
-use Pinepain\JsSandbox\Specs\PropertySpec;
-use Pinepain\JsSandbox\Specs\PropertySpecInterface;
+use PhpV8\JsSandbox\Extractors\ExtractorDefinitionBuilderException;
+use PhpV8\JsSandbox\Extractors\ExtractorDefinitionBuilderInterface;
+use PhpV8\JsSandbox\Specs\Builder\Exceptions\PropertySpecBuilderException;
+use PhpV8\JsSandbox\Specs\PropertySpec;
+use PhpV8\JsSandbox\Specs\PropertySpecInterface;
 use function strlen;
 
 

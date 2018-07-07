@@ -13,7 +13,7 @@
  */
 
 
-namespace Pinepain\JsSandbox\Executors;
+namespace PhpV8\JsSandbox\Executors;
 
 
 use V8\Context;

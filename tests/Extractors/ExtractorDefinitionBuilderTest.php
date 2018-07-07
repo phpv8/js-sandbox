@@ -1,16 +1,16 @@
 <?php declare(strict_types=1);
 
 
-namespace Pinepain\JsSandbox\Tests\Extractors;
+namespace PhpV8\JsSandbox\Tests\Extractors;
 
 
 use PHPUnit\Framework\TestCase;
-use Pinepain\JsSandbox\Extractors\Definition\ExtractorDefinitionInterface;
-use Pinepain\JsSandbox\Extractors\Definition\PlainExtractorDefinitionInterface;
-use Pinepain\JsSandbox\Extractors\Definition\VariableExtractorDefinition;
-use Pinepain\JsSandbox\Extractors\Definition\VariableExtractorDefinitionInterface;
-use Pinepain\JsSandbox\Extractors\ExtractorDefinitionBuilder;
-use Pinepain\JsSandbox\Extractors\ExtractorDefinitionBuilderInterface;
+use PhpV8\JsSandbox\Extractors\Definition\ExtractorDefinitionInterface;
+use PhpV8\JsSandbox\Extractors\Definition\PlainExtractorDefinitionInterface;
+use PhpV8\JsSandbox\Extractors\Definition\VariableExtractorDefinition;
+use PhpV8\JsSandbox\Extractors\Definition\VariableExtractorDefinitionInterface;
+use PhpV8\JsSandbox\Extractors\ExtractorDefinitionBuilder;
+use PhpV8\JsSandbox\Extractors\ExtractorDefinitionBuilderInterface;
 use UnexpectedValueException;
 
 

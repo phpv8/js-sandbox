@@ -13,10 +13,10 @@
  */
 
 
-namespace Pinepain\JsSandbox\Modules;
+namespace PhpV8\JsSandbox\Modules;
 
 
-use Pinepain\JsSandbox\NativeWrappers\NativeFunctionWrapper;
+use PhpV8\JsSandbox\NativeWrappers\NativeFunctionWrapper;
 
 
 class NativeRequireFunctionWrapper extends NativeFunctionWrapper implements NativeRequireFunctionWrapperInterface

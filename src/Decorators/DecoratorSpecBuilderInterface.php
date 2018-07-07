@@ -13,7 +13,7 @@
  */
 
 
-namespace Pinepain\JsSandbox\Decorators;
+namespace PhpV8\JsSandbox\Decorators;
 
 
 interface DecoratorSpecBuilderInterface

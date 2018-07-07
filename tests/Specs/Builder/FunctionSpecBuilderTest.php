@@ -13,20 +13,20 @@
  */
 
 
-namespace Pinepain\JsSandbox\Tests\Specs\Builder;
+namespace PhpV8\JsSandbox\Tests\Specs\Builder;
 
 
 use PHPUnit\Framework\TestCase;
 use PHPUnit_Framework_MockObject_MockObject;
-use Pinepain\JsSandbox\Decorators\DecoratorSpecBuilderInterface;
-use Pinepain\JsSandbox\Decorators\DecoratorSpecInterface;
-use Pinepain\JsSandbox\Specs\Builder\FunctionSpecBuilder;
-use Pinepain\JsSandbox\Specs\Builder\FunctionSpecBuilderInterface;
-use Pinepain\JsSandbox\Specs\Builder\ParameterSpecBuilderInterface;
-use Pinepain\JsSandbox\Specs\FunctionSpecInterface;
-use Pinepain\JsSandbox\Specs\Parameters\ParameterSpecInterface;
-use Pinepain\JsSandbox\Specs\ReturnSpec\AnyReturnSpec;
-use Pinepain\JsSandbox\Specs\ReturnSpec\VoidReturnSpec;
+use PhpV8\JsSandbox\Decorators\DecoratorSpecBuilderInterface;
+use PhpV8\JsSandbox\Decorators\DecoratorSpecInterface;
+use PhpV8\JsSandbox\Specs\Builder\FunctionSpecBuilder;
+use PhpV8\JsSandbox\Specs\Builder\FunctionSpecBuilderInterface;
+use PhpV8\JsSandbox\Specs\Builder\ParameterSpecBuilderInterface;
+use PhpV8\JsSandbox\Specs\FunctionSpecInterface;
+use PhpV8\JsSandbox\Specs\Parameters\ParameterSpecInterface;
+use PhpV8\JsSandbox\Specs\ReturnSpec\AnyReturnSpec;
+use PhpV8\JsSandbox\Specs\ReturnSpec\VoidReturnSpec;
 
 
 class FunctionSpecBuilderTest extends TestCase

@@ -13,14 +13,14 @@
  */
 
 
-namespace Pinepain\JsSandbox\Modules;
+namespace PhpV8\JsSandbox\Modules;
 
 
 use League\Flysystem\Util;
-use Pinepain\JsSandbox\Exceptions\NativeException;
-use Pinepain\JsSandbox\Modules\Repositories\NativeModulesRepositoryInterface;
-use Pinepain\JsSandbox\Modules\Repositories\SourceModulesRepositoryInterface;
-use Pinepain\JsSandbox\Wrappers\FunctionComponents\Runtime\ExecutionContextInterface;
+use PhpV8\JsSandbox\Exceptions\NativeException;
+use PhpV8\JsSandbox\Modules\Repositories\NativeModulesRepositoryInterface;
+use PhpV8\JsSandbox\Modules\Repositories\SourceModulesRepositoryInterface;
+use PhpV8\JsSandbox\Wrappers\FunctionComponents\Runtime\ExecutionContextInterface;
 use Throwable;
 use V8\ObjectValue;
 use function strlen;

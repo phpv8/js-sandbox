@@ -13,7 +13,7 @@
  */
 
 
-namespace Pinepain\JsSandbox\Modules;
+namespace PhpV8\JsSandbox\Modules;
 
 
 class ModulesStack implements ModulesStackInterface

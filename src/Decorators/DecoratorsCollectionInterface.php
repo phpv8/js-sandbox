@@ -13,12 +13,12 @@
  */
 
 
-namespace Pinepain\JsSandbox\Decorators;
+namespace PhpV8\JsSandbox\Decorators;
 
 
 use OutOfBoundsException;
 use OverflowException;
-use Pinepain\JsSandbox\Decorators\Definitions\DecoratorInterface;
+use PhpV8\JsSandbox\Decorators\Definitions\DecoratorInterface;
 
 
 interface DecoratorsCollectionInterface

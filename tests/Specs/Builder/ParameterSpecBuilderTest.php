@@ -13,21 +13,21 @@
  */
 
 
-namespace Pinepain\JsSandbox\Tests\Specs\Builder;
+namespace PhpV8\JsSandbox\Tests\Specs\Builder;
 
 
 use PHPUnit\Framework\TestCase;
 use PHPUnit_Framework_MockObject_MockObject;
-use Pinepain\JsSandbox\Extractors\Definition\ExtractorDefinitionInterface;
-use Pinepain\JsSandbox\Extractors\ExtractorDefinitionBuilderException;
-use Pinepain\JsSandbox\Extractors\ExtractorDefinitionBuilderInterface;
-use Pinepain\JsSandbox\Specs\Builder\ArgumentValueBuilderInterface;
-use Pinepain\JsSandbox\Specs\Builder\Exceptions\ArgumentValueBuilderException;
-use Pinepain\JsSandbox\Specs\Builder\ParameterSpecBuilder;
-use Pinepain\JsSandbox\Specs\Builder\ParameterSpecBuilderInterface;
-use Pinepain\JsSandbox\Specs\Parameters\MandatoryParameterSpec;
-use Pinepain\JsSandbox\Specs\Parameters\OptionalParameterSpec;
-use Pinepain\JsSandbox\Specs\Parameters\VariadicParameterSpec;
+use PhpV8\JsSandbox\Extractors\Definition\ExtractorDefinitionInterface;
+use PhpV8\JsSandbox\Extractors\ExtractorDefinitionBuilderException;
+use PhpV8\JsSandbox\Extractors\ExtractorDefinitionBuilderInterface;
+use PhpV8\JsSandbox\Specs\Builder\ArgumentValueBuilderInterface;
+use PhpV8\JsSandbox\Specs\Builder\Exceptions\ArgumentValueBuilderException;
+use PhpV8\JsSandbox\Specs\Builder\ParameterSpecBuilder;
+use PhpV8\JsSandbox\Specs\Builder\ParameterSpecBuilderInterface;
+use PhpV8\JsSandbox\Specs\Parameters\MandatoryParameterSpec;
+use PhpV8\JsSandbox\Specs\Parameters\OptionalParameterSpec;
+use PhpV8\JsSandbox\Specs\Parameters\VariadicParameterSpec;
 
 
 class ParameterSpecBuilderTest extends TestCase

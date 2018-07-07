@@ -13,7 +13,7 @@
  */
 
 
-namespace Pinepain\JsSandbox\Wrappers\ObjectComponents;
+namespace PhpV8\JsSandbox\Wrappers\ObjectComponents;
 
 
 use OverflowException;

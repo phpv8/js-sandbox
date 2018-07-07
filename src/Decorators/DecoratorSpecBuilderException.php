@@ -13,10 +13,10 @@
  */
 
 
-namespace Pinepain\JsSandbox\Decorators;
+namespace PhpV8\JsSandbox\Decorators;
 
 
-use Pinepain\JsSandbox\Specs\Builder\Exceptions\SpecBuilderException;
+use PhpV8\JsSandbox\Specs\Builder\Exceptions\SpecBuilderException;
 
 
 class DecoratorSpecBuilderException extends SpecBuilderException

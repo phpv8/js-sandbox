@@ -13,22 +13,22 @@
  */
 
 
-namespace Pinepain\JsSandbox\Tests\Specs\Builder;
+namespace PhpV8\JsSandbox\Tests\Specs\Builder;
 
 
 use PHPUnit\Framework\TestCase;
 use PHPUnit_Framework_MockObject_MockObject;
-use Pinepain\JsSandbox\Specs\BindingSpecInterface;
-use Pinepain\JsSandbox\Specs\Builder\BindingSpecBuilderInterface;
-use Pinepain\JsSandbox\Specs\Builder\Exceptions\BindingSpecBuilderException;
-use Pinepain\JsSandbox\Specs\Builder\Exceptions\FunctionSpecBuilderException;
-use Pinepain\JsSandbox\Specs\Builder\Exceptions\PropertySpecBuilderException;
-use Pinepain\JsSandbox\Specs\Builder\FunctionSpecBuilderInterface;
-use Pinepain\JsSandbox\Specs\Builder\ObjectSpecBuilder;
-use Pinepain\JsSandbox\Specs\Builder\ObjectSpecBuilderInterface;
-use Pinepain\JsSandbox\Specs\Builder\PropertySpecBuilderInterface;
-use Pinepain\JsSandbox\Specs\FunctionSpecInterface;
-use Pinepain\JsSandbox\Specs\PropertySpecInterface;
+use PhpV8\JsSandbox\Specs\BindingSpecInterface;
+use PhpV8\JsSandbox\Specs\Builder\BindingSpecBuilderInterface;
+use PhpV8\JsSandbox\Specs\Builder\Exceptions\BindingSpecBuilderException;
+use PhpV8\JsSandbox\Specs\Builder\Exceptions\FunctionSpecBuilderException;
+use PhpV8\JsSandbox\Specs\Builder\Exceptions\PropertySpecBuilderException;
+use PhpV8\JsSandbox\Specs\Builder\FunctionSpecBuilderInterface;
+use PhpV8\JsSandbox\Specs\Builder\ObjectSpecBuilder;
+use PhpV8\JsSandbox\Specs\Builder\ObjectSpecBuilderInterface;
+use PhpV8\JsSandbox\Specs\Builder\PropertySpecBuilderInterface;
+use PhpV8\JsSandbox\Specs\FunctionSpecInterface;
+use PhpV8\JsSandbox\Specs\PropertySpecInterface;
 
 
 class ObjectSpecBuilderTest extends TestCase

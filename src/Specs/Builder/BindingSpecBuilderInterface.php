@@ -13,11 +13,11 @@
  */
 
 
-namespace Pinepain\JsSandbox\Specs\Builder;
+namespace PhpV8\JsSandbox\Specs\Builder;
 
 
-use Pinepain\JsSandbox\Specs\BindingSpecInterface;
-use Pinepain\JsSandbox\Specs\Builder\Exceptions\BindingSpecBuilderException;
+use PhpV8\JsSandbox\Specs\BindingSpecInterface;
+use PhpV8\JsSandbox\Specs\Builder\Exceptions\BindingSpecBuilderException;
 
 
 interface BindingSpecBuilderInterface

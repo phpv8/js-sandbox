@@ -12,7 +12,7 @@
  * http://opensource.org/licenses/MIT
  */
 
-namespace Pinepain\JsSandbox\Decorators;
+namespace PhpV8\JsSandbox\Decorators;
 
 
 interface DecoratorSpecInterface

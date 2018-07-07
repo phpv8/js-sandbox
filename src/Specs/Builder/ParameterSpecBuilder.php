@@ -13,17 +13,17 @@
  */
 
 
-namespace Pinepain\JsSandbox\Specs\Builder;
+namespace PhpV8\JsSandbox\Specs\Builder;
 
 
-use Pinepain\JsSandbox\Extractors\ExtractorDefinitionBuilderException;
-use Pinepain\JsSandbox\Extractors\ExtractorDefinitionBuilderInterface;
-use Pinepain\JsSandbox\Specs\Builder\Exceptions\ArgumentValueBuilderException;
-use Pinepain\JsSandbox\Specs\Builder\Exceptions\ParameterSpecBuilderException;
-use Pinepain\JsSandbox\Specs\Parameters\MandatoryParameterSpec;
-use Pinepain\JsSandbox\Specs\Parameters\OptionalParameterSpec;
-use Pinepain\JsSandbox\Specs\Parameters\ParameterSpecInterface;
-use Pinepain\JsSandbox\Specs\Parameters\VariadicParameterSpec;
+use PhpV8\JsSandbox\Extractors\ExtractorDefinitionBuilderException;
+use PhpV8\JsSandbox\Extractors\ExtractorDefinitionBuilderInterface;
+use PhpV8\JsSandbox\Specs\Builder\Exceptions\ArgumentValueBuilderException;
+use PhpV8\JsSandbox\Specs\Builder\Exceptions\ParameterSpecBuilderException;
+use PhpV8\JsSandbox\Specs\Parameters\MandatoryParameterSpec;
+use PhpV8\JsSandbox\Specs\Parameters\OptionalParameterSpec;
+use PhpV8\JsSandbox\Specs\Parameters\ParameterSpecInterface;
+use PhpV8\JsSandbox\Specs\Parameters\VariadicParameterSpec;
 
 
 class ParameterSpecBuilder implements ParameterSpecBuilderInterface

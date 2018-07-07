@@ -13,11 +13,11 @@
  */
 
 
-namespace Pinepain\JsSandbox\Wrappers\FunctionComponents;
+namespace PhpV8\JsSandbox\Wrappers\FunctionComponents;
 
 
-use Pinepain\JsSandbox\Specs\FunctionSpecInterface;
-use Pinepain\JsSandbox\Wrappers\FunctionComponents\Runtime\ExecutionContextInterface;
+use PhpV8\JsSandbox\Specs\FunctionSpecInterface;
+use PhpV8\JsSandbox\Wrappers\FunctionComponents\Runtime\ExecutionContextInterface;
 
 
 interface FunctionDecoratorInterface

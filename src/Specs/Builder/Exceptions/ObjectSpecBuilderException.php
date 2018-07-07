@@ -13,7 +13,7 @@
  */
 
 
-namespace Pinepain\JsSandbox\Specs\Builder\Exceptions;
+namespace PhpV8\JsSandbox\Specs\Builder\Exceptions;
 
 
 class ObjectSpecBuilderException extends SpecBuilderException

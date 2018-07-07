@@ -13,16 +13,16 @@
  */
 
 
-namespace Pinepain\JsSandbox\Tests\Wrappers\FunctionComponents\Runtime;
+namespace PhpV8\JsSandbox\Tests\Wrappers\FunctionComponents\Runtime;
 
 
 use PHPUnit\Framework\TestCase;
 use PHPUnit_Framework_MockObject_MockObject;
-use Pinepain\JsSandbox\NativeWrappers\NativeFunctionWrapperInterface;
-use Pinepain\JsSandbox\Specs\FunctionSpecInterface;
-use Pinepain\JsSandbox\Wrappers\FunctionComponents\Runtime\ExecutionContext;
-use Pinepain\JsSandbox\Wrappers\Runtime\RuntimeFunctionInterface;
-use Pinepain\JsSandbox\Wrappers\WrapperInterface;
+use PhpV8\JsSandbox\NativeWrappers\NativeFunctionWrapperInterface;
+use PhpV8\JsSandbox\Specs\FunctionSpecInterface;
+use PhpV8\JsSandbox\Wrappers\FunctionComponents\Runtime\ExecutionContext;
+use PhpV8\JsSandbox\Wrappers\Runtime\RuntimeFunctionInterface;
+use PhpV8\JsSandbox\Wrappers\WrapperInterface;
 use V8\Context;
 use V8\FunctionCallbackInfo;
 use V8\FunctionObject;

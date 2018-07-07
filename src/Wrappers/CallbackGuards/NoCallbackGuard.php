@@ -13,7 +13,7 @@
  */
 
 
-namespace Pinepain\JsSandbox\Wrappers\CallbackGuards;
+namespace PhpV8\JsSandbox\Wrappers\CallbackGuards;
 
 
 class NoCallbackGuard implements CallbackGuardInterface

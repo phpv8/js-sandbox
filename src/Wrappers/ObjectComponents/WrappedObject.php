@@ -13,10 +13,10 @@
  */
 
 
-namespace Pinepain\JsSandbox\Wrappers\ObjectComponents;
+namespace PhpV8\JsSandbox\Wrappers\ObjectComponents;
 
 
-use Pinepain\JsSandbox\Specs\ObjectSpecInterface;
+use PhpV8\JsSandbox\Specs\ObjectSpecInterface;
 use V8\ObjectValue;
 
 

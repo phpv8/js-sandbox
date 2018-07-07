@@ -1,11 +1,11 @@
 <?php declare(strict_types=1);
 
 
-namespace Pinepain\JsSandbox\Tests\Specs\Builder;
+namespace PhpV8\JsSandbox\Tests\Specs\Builder;
 
 
 use PHPUnit\Framework\TestCase;
-use Pinepain\JsSandbox\Specs\Builder\ArgumentValueBuilder;
+use PhpV8\JsSandbox\Specs\Builder\ArgumentValueBuilder;
 
 
 class ArgumentValueBuilderTest extends TestCase

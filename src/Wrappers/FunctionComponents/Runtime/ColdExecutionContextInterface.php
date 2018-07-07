@@ -13,11 +13,11 @@
  */
 
 
-namespace Pinepain\JsSandbox\Wrappers\FunctionComponents\Runtime;
+namespace PhpV8\JsSandbox\Wrappers\FunctionComponents\Runtime;
 
 
-use Pinepain\JsSandbox\Specs\FunctionSpecInterface;
-use Pinepain\JsSandbox\Wrappers\WrapperInterface;
+use PhpV8\JsSandbox\Specs\FunctionSpecInterface;
+use PhpV8\JsSandbox\Wrappers\WrapperInterface;
 use V8\FunctionCallbackInfo;
 
 

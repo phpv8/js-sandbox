@@ -13,11 +13,11 @@
  */
 
 
-namespace Pinepain\JsSandbox\Executors;
+namespace PhpV8\JsSandbox\Executors;
 
 
 use League\Flysystem\Util;
-use Pinepain\JsSandbox\Wrappers\WrapperInterface;
+use PhpV8\JsSandbox\Wrappers\WrapperInterface;
 use V8\Context;
 use V8\FunctionObject;
 use V8\Isolate;

@@ -13,17 +13,17 @@
  */
 
 
-namespace Pinepain\JsSandbox\Tests\Specs\Builder;
+namespace PhpV8\JsSandbox\Tests\Specs\Builder;
 
 
 use PHPUnit\Framework\TestCase;
 use PHPUnit_Framework_MockObject_MockObject;
-use Pinepain\JsSandbox\Extractors\Definition\ExtractorDefinitionInterface;
-use Pinepain\JsSandbox\Extractors\ExtractorDefinitionBuilderException;
-use Pinepain\JsSandbox\Extractors\ExtractorDefinitionBuilderInterface;
-use Pinepain\JsSandbox\Specs\Builder\PropertySpecBuilder;
-use Pinepain\JsSandbox\Specs\Builder\PropertySpecBuilderInterface;
-use Pinepain\JsSandbox\Specs\PropertySpecInterface;
+use PhpV8\JsSandbox\Extractors\Definition\ExtractorDefinitionInterface;
+use PhpV8\JsSandbox\Extractors\ExtractorDefinitionBuilderException;
+use PhpV8\JsSandbox\Extractors\ExtractorDefinitionBuilderInterface;
+use PhpV8\JsSandbox\Specs\Builder\PropertySpecBuilder;
+use PhpV8\JsSandbox\Specs\Builder\PropertySpecBuilderInterface;
+use PhpV8\JsSandbox\Specs\PropertySpecInterface;
 
 
 class PropertySpecBuilderTest extends TestCase

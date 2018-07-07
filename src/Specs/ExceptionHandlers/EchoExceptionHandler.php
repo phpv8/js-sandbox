@@ -13,10 +13,10 @@
  */
 
 
-namespace Pinepain\JsSandbox\Specs\ExceptionHandlers;
+namespace PhpV8\JsSandbox\Specs\ExceptionHandlers;
 
 
-use Pinepain\JsSandbox\Exceptions\NativeException;
+use PhpV8\JsSandbox\Exceptions\NativeException;
 use Throwable;
 use V8\Context;
 use V8\Isolate;

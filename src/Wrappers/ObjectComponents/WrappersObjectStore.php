@@ -13,11 +13,11 @@
  */
 
 
-namespace Pinepain\JsSandbox\Wrappers\ObjectComponents;
+namespace PhpV8\JsSandbox\Wrappers\ObjectComponents;
 
 
 use OverflowException;
-use Pinepain\ObjectMaps\ObjectMapInterface;
+use PhpV8\ObjectMaps\ObjectMapInterface;
 use UnexpectedValueException;
 use V8\ObjectValue;
 

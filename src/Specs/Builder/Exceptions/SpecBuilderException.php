@@ -13,10 +13,10 @@
  */
 
 
-namespace Pinepain\JsSandbox\Specs\Builder\Exceptions;
+namespace PhpV8\JsSandbox\Specs\Builder\Exceptions;
 
 
-use Pinepain\JsSandbox\Exceptions\Exception;
+use PhpV8\JsSandbox\Exceptions\Exception;
 
 
 class SpecBuilderException extends Exception

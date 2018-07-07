@@ -13,7 +13,7 @@
  */
 
 
-namespace Pinepain\JsSandbox\Wrappers\Runtime;
+namespace PhpV8\JsSandbox\Wrappers\Runtime;
 
 
 use Ref\WeakReference;

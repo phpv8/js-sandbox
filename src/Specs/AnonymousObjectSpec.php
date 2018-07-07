@@ -13,7 +13,7 @@
  */
 
 
-namespace Pinepain\JsSandbox\Specs;
+namespace PhpV8\JsSandbox\Specs;
 
 
 class AnonymousObjectSpec extends ObjectSpec

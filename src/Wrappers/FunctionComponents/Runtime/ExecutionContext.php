@@ -13,14 +13,14 @@
  */
 
 
-namespace Pinepain\JsSandbox\Wrappers\FunctionComponents\Runtime;
+namespace PhpV8\JsSandbox\Wrappers\FunctionComponents\Runtime;
 
 
-use Pinepain\JsSandbox\NativeWrappers\NativeFunctionWrapper;
-use Pinepain\JsSandbox\NativeWrappers\NativeFunctionWrapperInterface;
-use Pinepain\JsSandbox\Specs\FunctionSpecInterface;
-use Pinepain\JsSandbox\Wrappers\Runtime\RuntimeFunctionInterface;
-use Pinepain\JsSandbox\Wrappers\WrapperInterface;
+use PhpV8\JsSandbox\NativeWrappers\NativeFunctionWrapper;
+use PhpV8\JsSandbox\NativeWrappers\NativeFunctionWrapperInterface;
+use PhpV8\JsSandbox\Specs\FunctionSpecInterface;
+use PhpV8\JsSandbox\Wrappers\Runtime\RuntimeFunctionInterface;
+use PhpV8\JsSandbox\Wrappers\WrapperInterface;
 use V8\Context;
 use V8\FunctionCallbackInfo;
 use V8\FunctionObject;

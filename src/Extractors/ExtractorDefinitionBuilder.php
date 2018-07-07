@@ -13,14 +13,14 @@
  */
 
 
-namespace Pinepain\JsSandbox\Extractors;
+namespace PhpV8\JsSandbox\Extractors;
 
 
-use Pinepain\JsSandbox\Extractors\Definition\ExtractorDefinitionInterface;
-use Pinepain\JsSandbox\Extractors\Definition\PlainExtractorDefinition;
-use Pinepain\JsSandbox\Extractors\Definition\PlainExtractorDefinitionInterface;
-use Pinepain\JsSandbox\Extractors\Definition\RecursiveExtractorDefinition;
-use Pinepain\JsSandbox\Extractors\Definition\VariableExtractorDefinition;
+use PhpV8\JsSandbox\Extractors\Definition\ExtractorDefinitionInterface;
+use PhpV8\JsSandbox\Extractors\Definition\PlainExtractorDefinition;
+use PhpV8\JsSandbox\Extractors\Definition\PlainExtractorDefinitionInterface;
+use PhpV8\JsSandbox\Extractors\Definition\RecursiveExtractorDefinition;
+use PhpV8\JsSandbox\Extractors\Definition\VariableExtractorDefinition;
 
 
 class ExtractorDefinitionBuilder implements ExtractorDefinitionBuilderInterface

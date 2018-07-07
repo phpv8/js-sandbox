@@ -13,12 +13,12 @@
  */
 
 
-namespace Pinepain\JsSandbox\Extractors;
+namespace PhpV8\JsSandbox\Extractors;
 
 
-use Pinepain\JsSandbox\Extractors\Definition\ExtractorDefinitionInterface;
-use Pinepain\JsSandbox\Extractors\Definition\PlainExtractorDefinitionInterface;
-use Pinepain\JsSandbox\Extractors\Definition\VariableExtractorDefinitionInterface;
+use PhpV8\JsSandbox\Extractors\Definition\ExtractorDefinitionInterface;
+use PhpV8\JsSandbox\Extractors\Definition\PlainExtractorDefinitionInterface;
+use PhpV8\JsSandbox\Extractors\Definition\VariableExtractorDefinitionInterface;
 use V8\Context;
 use V8\Value;
 

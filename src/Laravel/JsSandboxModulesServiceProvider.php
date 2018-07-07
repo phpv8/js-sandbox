@@ -13,27 +13,27 @@
  */
 
 
-namespace Pinepain\JsSandbox\Laravel;
+namespace PhpV8\JsSandbox\Laravel;
 
 
 use Illuminate\Contracts\Container\Container;
 use Illuminate\Support\ServiceProvider;
-use Pinepain\JsSandbox\Common\NativeGlobalObjectWrapper;
-use Pinepain\JsSandbox\Common\NativeGlobalObjectWrapperInterface;
-use Pinepain\JsSandbox\Modules\ModulesCache;
-use Pinepain\JsSandbox\Modules\ModulesCacheInterface;
-use Pinepain\JsSandbox\Modules\ModulesService;
-use Pinepain\JsSandbox\Modules\ModulesStack;
-use Pinepain\JsSandbox\Modules\ModulesStackInterface;
-use Pinepain\JsSandbox\Modules\NativeRequireFunctionWrapperInterface;
-use Pinepain\JsSandbox\Modules\Repositories\NativeModulesRepository;
-use Pinepain\JsSandbox\Modules\Repositories\NativeModulesRepositoryInterface;
-use Pinepain\JsSandbox\Modules\Repositories\SourceModulesRepository;
-use Pinepain\JsSandbox\Modules\Repositories\SourceModulesRepositoryInterface;
-use Pinepain\JsSandbox\Modules\RequireCallback;
-use Pinepain\JsSandbox\Modules\RequireCallbackInterface;
-use Pinepain\JsSandbox\Specs\ObjectSpecsCollectionInterface;
-use Pinepain\JsSandbox\Wrappers\WrapperInterface;
+use PhpV8\JsSandbox\Common\NativeGlobalObjectWrapper;
+use PhpV8\JsSandbox\Common\NativeGlobalObjectWrapperInterface;
+use PhpV8\JsSandbox\Modules\ModulesCache;
+use PhpV8\JsSandbox\Modules\ModulesCacheInterface;
+use PhpV8\JsSandbox\Modules\ModulesService;
+use PhpV8\JsSandbox\Modules\ModulesStack;
+use PhpV8\JsSandbox\Modules\ModulesStackInterface;
+use PhpV8\JsSandbox\Modules\NativeRequireFunctionWrapperInterface;
+use PhpV8\JsSandbox\Modules\Repositories\NativeModulesRepository;
+use PhpV8\JsSandbox\Modules\Repositories\NativeModulesRepositoryInterface;
+use PhpV8\JsSandbox\Modules\Repositories\SourceModulesRepository;
+use PhpV8\JsSandbox\Modules\Repositories\SourceModulesRepositoryInterface;
+use PhpV8\JsSandbox\Modules\RequireCallback;
+use PhpV8\JsSandbox\Modules\RequireCallbackInterface;
+use PhpV8\JsSandbox\Specs\ObjectSpecsCollectionInterface;
+use PhpV8\JsSandbox\Wrappers\WrapperInterface;
 use V8\Context;
 use V8\Isolate;
 

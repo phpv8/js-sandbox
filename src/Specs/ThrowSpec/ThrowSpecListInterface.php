@@ -13,7 +13,7 @@
  */
 
 
-namespace Pinepain\JsSandbox\Specs\ThrowSpec;
+namespace PhpV8\JsSandbox\Specs\ThrowSpec;
 
 
 interface ThrowSpecListInterface

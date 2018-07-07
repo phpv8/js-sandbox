@@ -13,21 +13,21 @@
  */
 
 
-namespace Pinepain\JsSandbox\Specs\Builder;
+namespace PhpV8\JsSandbox\Specs\Builder;
 
 
-use Pinepain\JsSandbox\Decorators\DecoratorSpecBuilderInterface;
-use Pinepain\JsSandbox\Specs\Builder\Exceptions\FunctionSpecBuilderException;
-use Pinepain\JsSandbox\Specs\FunctionSpec;
-use Pinepain\JsSandbox\Specs\FunctionSpecInterface;
-use Pinepain\JsSandbox\Specs\ParametersList;
-use Pinepain\JsSandbox\Specs\ParametersListInterface;
-use Pinepain\JsSandbox\Specs\ReturnSpec\AnyReturnSpec;
-use Pinepain\JsSandbox\Specs\ReturnSpec\ReturnSpecInterface;
-use Pinepain\JsSandbox\Specs\ReturnSpec\VoidReturnSpec;
-use Pinepain\JsSandbox\Specs\ThrowSpec\EchoThrowSpec;
-use Pinepain\JsSandbox\Specs\ThrowSpec\ThrowSpecList;
-use Pinepain\JsSandbox\Specs\ThrowSpec\ThrowSpecListInterface;
+use PhpV8\JsSandbox\Decorators\DecoratorSpecBuilderInterface;
+use PhpV8\JsSandbox\Specs\Builder\Exceptions\FunctionSpecBuilderException;
+use PhpV8\JsSandbox\Specs\FunctionSpec;
+use PhpV8\JsSandbox\Specs\FunctionSpecInterface;
+use PhpV8\JsSandbox\Specs\ParametersList;
+use PhpV8\JsSandbox\Specs\ParametersListInterface;
+use PhpV8\JsSandbox\Specs\ReturnSpec\AnyReturnSpec;
+use PhpV8\JsSandbox\Specs\ReturnSpec\ReturnSpecInterface;
+use PhpV8\JsSandbox\Specs\ReturnSpec\VoidReturnSpec;
+use PhpV8\JsSandbox\Specs\ThrowSpec\EchoThrowSpec;
+use PhpV8\JsSandbox\Specs\ThrowSpec\ThrowSpecList;
+use PhpV8\JsSandbox\Specs\ThrowSpec\ThrowSpecListInterface;
 
 
 class FunctionSpecBuilder implements FunctionSpecBuilderInterface

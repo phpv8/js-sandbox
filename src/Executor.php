@@ -13,10 +13,10 @@
  */
 
 
-namespace Pinepain\JsSandbox;
+namespace PhpV8\JsSandbox;
 
 
-use Pinepain\JsSandbox\Executors\ExecutorInterface;
+use PhpV8\JsSandbox\Executors\ExecutorInterface;
 use V8\Context;
 use V8\Value;
 

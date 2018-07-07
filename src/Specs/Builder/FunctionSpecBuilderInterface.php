@@ -13,11 +13,11 @@
  */
 
 
-namespace Pinepain\JsSandbox\Specs\Builder;
+namespace PhpV8\JsSandbox\Specs\Builder;
 
 
-use Pinepain\JsSandbox\Specs\Builder\Exceptions\FunctionSpecBuilderException;
-use Pinepain\JsSandbox\Specs\FunctionSpecInterface;
+use PhpV8\JsSandbox\Specs\Builder\Exceptions\FunctionSpecBuilderException;
+use PhpV8\JsSandbox\Specs\FunctionSpecInterface;
 
 
 interface FunctionSpecBuilderInterface

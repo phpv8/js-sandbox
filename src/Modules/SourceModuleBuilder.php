@@ -13,11 +13,11 @@
  */
 
 
-namespace Pinepain\JsSandbox\Modules;
+namespace PhpV8\JsSandbox\Modules;
 
 
 use League\Flysystem\FilesystemInterface;
-use Pinepain\JsSandbox\Exceptions\NativeException;
+use PhpV8\JsSandbox\Exceptions\NativeException;
 use V8\Context;
 use V8\FunctionObject;
 use V8\Isolate;

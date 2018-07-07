@@ -13,12 +13,12 @@
  */
 
 
-namespace Pinepain\JsSandbox\Extractors;
+namespace PhpV8\JsSandbox\Extractors;
 
 
 use OutOfBoundsException;
 use OverflowException;
-use Pinepain\JsSandbox\Extractors\PlainExtractors\PlainExtractorInterface;
+use PhpV8\JsSandbox\Extractors\PlainExtractors\PlainExtractorInterface;
 
 
 interface ExtractorsCollectionInterface

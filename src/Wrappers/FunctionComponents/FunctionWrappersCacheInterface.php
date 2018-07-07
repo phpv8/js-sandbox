@@ -13,7 +13,7 @@
  */
 
 
-namespace Pinepain\JsSandbox\Wrappers\FunctionComponents;
+namespace PhpV8\JsSandbox\Wrappers\FunctionComponents;
 
 
 use V8\FunctionObject;

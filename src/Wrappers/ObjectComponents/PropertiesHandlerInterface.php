@@ -13,10 +13,10 @@
  */
 
 
-namespace Pinepain\JsSandbox\Wrappers\ObjectComponents;
+namespace PhpV8\JsSandbox\Wrappers\ObjectComponents;
 
 
-use Pinepain\JsSandbox\Wrappers\Runtime\RuntimeObject;
+use PhpV8\JsSandbox\Wrappers\Runtime\RuntimeObject;
 use V8\NamedPropertyHandlerConfiguration;
 
 

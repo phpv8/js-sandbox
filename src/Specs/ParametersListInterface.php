@@ -13,10 +13,10 @@
  */
 
 
-namespace Pinepain\JsSandbox\Specs;
+namespace PhpV8\JsSandbox\Specs;
 
 
-use Pinepain\JsSandbox\Specs\Parameters\ParameterSpecInterface;
+use PhpV8\JsSandbox\Specs\Parameters\ParameterSpecInterface;
 
 
 interface ParametersListInterface

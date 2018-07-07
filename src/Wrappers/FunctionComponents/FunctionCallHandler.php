@@ -13,11 +13,11 @@
  */
 
 
-namespace Pinepain\JsSandbox\Wrappers\FunctionComponents;
+namespace PhpV8\JsSandbox\Wrappers\FunctionComponents;
 
 
-use Pinepain\JsSandbox\Wrappers\FunctionComponents\Runtime\ColdExecutionContextInterface;
-use Pinepain\JsSandbox\Wrappers\Runtime\RuntimeFunctionInterface;
+use PhpV8\JsSandbox\Wrappers\FunctionComponents\Runtime\ColdExecutionContextInterface;
+use PhpV8\JsSandbox\Wrappers\Runtime\RuntimeFunctionInterface;
 use Throwable;
 use V8\FunctionCallbackInfo;
 

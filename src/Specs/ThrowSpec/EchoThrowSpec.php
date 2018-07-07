@@ -13,10 +13,10 @@
  */
 
 
-namespace Pinepain\JsSandbox\Specs\ThrowSpec;
+namespace PhpV8\JsSandbox\Specs\ThrowSpec;
 
 
-use Pinepain\JsSandbox\Specs\ExceptionHandlers\EchoExceptionHandler;
+use PhpV8\JsSandbox\Specs\ExceptionHandlers\EchoExceptionHandler;
 
 
 class EchoThrowSpec extends ThrowSpec

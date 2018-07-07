@@ -13,7 +13,7 @@
  */
 
 
-namespace Pinepain\JsSandbox\Specs\ExceptionHandlers;
+namespace PhpV8\JsSandbox\Specs\ExceptionHandlers;
 
 
 use Throwable;

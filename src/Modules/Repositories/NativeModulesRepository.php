@@ -13,12 +13,12 @@
  */
 
 
-namespace Pinepain\JsSandbox\Modules\Repositories;
+namespace PhpV8\JsSandbox\Modules\Repositories;
 
 
 use OverflowException;
-use Pinepain\JsSandbox\Modules\NativeModulePrototypeInterface;
-use Pinepain\JsSandbox\Modules\SourceModulePrototype;
+use PhpV8\JsSandbox\Modules\NativeModulePrototypeInterface;
+use PhpV8\JsSandbox\Modules\SourceModulePrototype;
 use UnexpectedValueException;
 
 

@@ -12,10 +12,10 @@
  * http://opensource.org/licenses/MIT
  */
 
-namespace Pinepain\JsSandbox\Specs\Builder;
+namespace PhpV8\JsSandbox\Specs\Builder;
 
 
-use Pinepain\JsSandbox\Specs\Builder\Exceptions\ArgumentValueBuilderException;
+use PhpV8\JsSandbox\Specs\Builder\Exceptions\ArgumentValueBuilderException;
 
 
 interface ArgumentValueBuilderInterface

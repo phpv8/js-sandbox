@@ -13,10 +13,10 @@
  */
 
 
-namespace Pinepain\JsSandbox\Wrappers\FunctionComponents;
+namespace PhpV8\JsSandbox\Wrappers\FunctionComponents;
 
 
-use Pinepain\JsSandbox\Specs\ThrowSpec\ThrowSpecListInterface;
+use PhpV8\JsSandbox\Specs\ThrowSpec\ThrowSpecListInterface;
 use Throwable;
 use V8\Context;
 use V8\Isolate;

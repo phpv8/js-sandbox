@@ -13,7 +13,7 @@
  */
 
 
-namespace Pinepain\JsSandbox\Executors;
+namespace PhpV8\JsSandbox\Executors;
 
 
 use League\Flysystem\FilesystemInterface;

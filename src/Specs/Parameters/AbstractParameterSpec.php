@@ -13,11 +13,11 @@
  */
 
 
-namespace Pinepain\JsSandbox\Specs\Parameters;
+namespace PhpV8\JsSandbox\Specs\Parameters;
 
 
-use Pinepain\JsSandbox\Extractors\Definition\ExtractorDefinitionInterface;
-use Pinepain\JsSandbox\Specs\SpecException;
+use PhpV8\JsSandbox\Extractors\Definition\ExtractorDefinitionInterface;
+use PhpV8\JsSandbox\Specs\SpecException;
 
 
 abstract class AbstractParameterSpec implements ParameterSpecInterface

@@ -13,16 +13,16 @@
  */
 
 
-namespace Pinepain\JsSandbox\Specs\Builder;
+namespace PhpV8\JsSandbox\Specs\Builder;
 
 
-use Pinepain\JsSandbox\Specs\BindingSpecInterface;
-use Pinepain\JsSandbox\Specs\Builder\Exceptions\BindingSpecBuilderException;
-use Pinepain\JsSandbox\Specs\Builder\Exceptions\FunctionSpecBuilderException;
-use Pinepain\JsSandbox\Specs\Builder\Exceptions\ObjectSpecBuilderException;
-use Pinepain\JsSandbox\Specs\Builder\Exceptions\PropertySpecBuilderException;
-use Pinepain\JsSandbox\Specs\FunctionSpecInterface;
-use Pinepain\JsSandbox\Specs\PropertySpecInterface;
+use PhpV8\JsSandbox\Specs\BindingSpecInterface;
+use PhpV8\JsSandbox\Specs\Builder\Exceptions\BindingSpecBuilderException;
+use PhpV8\JsSandbox\Specs\Builder\Exceptions\FunctionSpecBuilderException;
+use PhpV8\JsSandbox\Specs\Builder\Exceptions\ObjectSpecBuilderException;
+use PhpV8\JsSandbox\Specs\Builder\Exceptions\PropertySpecBuilderException;
+use PhpV8\JsSandbox\Specs\FunctionSpecInterface;
+use PhpV8\JsSandbox\Specs\PropertySpecInterface;
 
 
 class ObjectSpecBuilder implements ObjectSpecBuilderInterface

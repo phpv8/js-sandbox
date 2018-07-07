@@ -13,7 +13,7 @@
  */
 
 
-namespace Pinepain\JsSandbox\Extractors\Definition;
+namespace PhpV8\JsSandbox\Extractors\Definition;
 
 
 class RecursiveExtractorDefinition extends AbstractExtractorDefinition implements PlainExtractorDefinitionInterface

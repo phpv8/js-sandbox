@@ -13,11 +13,11 @@
  */
 
 
-namespace Pinepain\JsSandbox\Executors;
+namespace PhpV8\JsSandbox\Executors;
 
 
 use League\Flysystem\Util;
-use Pinepain\JsSandbox\Modules\NativeRequireFunctionWrapperInterface;
+use PhpV8\JsSandbox\Modules\NativeRequireFunctionWrapperInterface;
 use V8\Context;
 use V8\Isolate;
 use V8\Value;
