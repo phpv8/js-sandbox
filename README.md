@@ -18,11 +18,6 @@ embedding JavaScript in PHP easier.
 
 **This library is still under heavy development and its public API may change without any warning. Use at your own risk.**
 
-### PLEASE READ:
-
-Maintaining this project takes significant amount of time and efforts.
-If you like my work and want to show your appreciation, please consider supporting me at https://www.patreon.com/pinepain.
-
 ## Installation
 
 ```
